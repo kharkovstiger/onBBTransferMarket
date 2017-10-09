@@ -12,6 +12,8 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $scope.tl=[];
 
     $scope.log=function () {
+        console.log($scope.login);
+        console.log($scope.code);
         $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
             // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
             function (response) {
