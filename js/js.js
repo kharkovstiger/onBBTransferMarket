@@ -2,6 +2,8 @@ var app = angular.module('obbtm', ['ngCookies']);
 
 app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http) {
 
+    $scope.register=false;
+
     var myBaseURL='http://localhost:8080/api';
     var baseURL='http://bbapi.buzzerbeater.com';
 
@@ -9,11 +11,11 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
 
     $scope.tl=[];
 
-    $http.get(myBaseURL+'/login?login=lnrstgr&code=katana').then(
+    $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
     // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
         function (response) {
-            console.log(response.data);
-            console.log(response.headers);
+            console.log(response);
+            $scope.register=true;
         },
         function (response) {
             console.log(response.status+", "+response.data);
@@ -23,7 +25,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $scope.getTLforNT=function () {
         console.log($cookies.getAll());
         for (var i=0;i<NTIds.length;i++){
-            $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
+            $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+$scope.login+'&code='+$scope.code).then(
                 function (response) {
                     console.log(response.status+", "+response.data);
                 },
