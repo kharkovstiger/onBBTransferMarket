@@ -66,7 +66,8 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     };
 
     $scope.getTLforList=function () {
-        var list=$scope.ids.split(/[, ]+/);
+        var list=$scope.ids.split(/[, \n]/);
+        console.log(list);
         for (var i=0;i<list.length;i++){
             $http.get(myBaseURL+'/player?id='+list[i]+'&login='+$scope.login+'&code='+$scope.code).then(
                 function (response) {
