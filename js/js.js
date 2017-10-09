@@ -13,7 +13,7 @@ app.controller('obbtmCtrl', function ($scope, $http) {
     $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
         function (response) {
             console.log(response.status+", "+response.data);
-            console.log(response);
+            console.log(response.headers);
         },
         function (response) {
             console.log(response.status+", "+response.data);
