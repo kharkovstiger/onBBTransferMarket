@@ -13,6 +13,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
         function (response) {
             console.log(response.status+", "+response.data);
+            console.log(response.headers);
             console.log($cookies.get('ASP.NET_SessionId'));
             console.log($cookies.get('.ASPXAUTH'));
         },
