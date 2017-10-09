@@ -3,6 +3,7 @@ var app = angular.module('obbtm', ['ngCookies']);
 app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http) {
 
     $scope.register=false;
+    $scope.isDisable=false;
 
     var myLocalBaseURL='http://localhost:8080/api';
     var myBaseURL='https://forbb.herokuapp.com/api';
@@ -22,7 +23,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $scope.tl=[];
 
     $scope.log=function () {
-        $scope.tl=[];
+        $scope.isDisable=true;
         $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
             // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
             function (response) {
@@ -74,6 +75,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     };
 
     $scope.getTLforList=function () {
+        $scope.tl=[];
         var list=$scope.ids.split(/[, \n]/);
         console.log(list);
         for (var i=0;i<list.length;i++){

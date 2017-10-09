@@ -9,7 +9,7 @@
     <form ng-hide="register">
         <label>Login: <input ng-model="login"></label>
         <label>Secure Code: <input ng-model="code" type="password"></label>
-        <button ng-click="log()">Login</button>
+        <button ng-disabled="isDisable" ng-click="log()">Login</button>
     </form>
     <div ng-show="register">
         <button ng-click="getTLforNT()">NT</button> <button ng-click="getTLforNTU21()">NT U21</button><br>
