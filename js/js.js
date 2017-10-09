@@ -16,6 +16,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
             console.log(response.headers);
             console.log($cookies.get('ASP.NET_SessionId'));
             console.log($cookies.get('.ASPXAUTH'));
+            console.log($cookies.getAll());
         },
         function (response) {
             console.log(response.status+", "+response.data);
