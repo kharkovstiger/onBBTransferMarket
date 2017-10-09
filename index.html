@@ -11,7 +11,26 @@
         <label>Secure Code: <input ng-model="code" type="password"></label>
         <button ng-click="log()">Login</button>
     </form>
-    <button ng-show="register" ng-click="getTLforNT()">NT</button>
+    <div ng-show="register">
+        <button ng-click="getTLforNT()">NT</button>
+        <div ng-show="tl.length===0">No one player from list is on transfer market</div>
+        <div ng-show="tl.length>0">
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+                <tr ng-repeat="player in tl">
+                    <td><a href="{{'http://www.buzzerbeater.com/player/'+
+                    player.getElementsByTagName('player')[0].id+'/overview.aspx'}}">
+                        {{player.getElementsByTagName('player')[0].id}}</a></td>
+                    <td>{{player.getElementsByTagName('firstName')[0].textContent}}</td>
+                    <td>{{player.getElementsByTagName('lastName')[0].textContent}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.js"></script>

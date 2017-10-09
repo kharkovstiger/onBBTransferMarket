@@ -4,7 +4,8 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
 
     $scope.register=false;
 
-    var myBaseURL='http://localhost:8080/api';
+    var myLocalBaseURL='http://localhost:8080/api';
+    var myBaseURL='https://forbb.herokuapp.com/api';
     var baseURL='http://bbapi.buzzerbeater.com';
 
     var NTIds=[39613679, 40457235];
@@ -12,14 +13,11 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $scope.tl=[];
 
     $scope.log=function () {
-        console.log($scope.login);
-        console.log($scope.code);
         $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
             // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
             function (response) {
-                console.log(response);
-                console.log(response.data.getElementsByTagName('loggedIn'));
-                if (response.data.getElementsByTagName('loggedIn').length>0) {
+                // console.log(response.data);
+                if ($.parseXML(response.data).getElementsByTagName('loggedIn').length>0) {
                     $scope.register = true;
                 }
             },
@@ -34,15 +32,17 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
         for (var i=0;i<NTIds.length;i++){
             $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+$scope.login+'&code='+$scope.code).then(
                 function (response) {
-                    console.log(response.status+", "+response.data);
-                    var sale=response.data.getElementsByTagName('forSale');
-                    console.log(sale.val());
-                    console.log(sale.text());
+                    // console.log(response.status+", "+response.data);
+                    var sale=$.parseXML(response.data).getElementsByTagName('forSale');
+                    if (sale[0].textContent==1){
+                        $scope.tl.push($.parseXML(response.data));
+                    }
                 },
                 function (response) {
                     console.log(response.status+", "+response.data);
                 }
             );
         }
+
     }
 }]);
