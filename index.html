@@ -6,12 +6,12 @@
 </head>
 <body>
 
-    <form ng-if="!register">
+    <form ng-hide="register">
         <label>Login: <input ng-model="login"></label>
         <label>Secure Code: <input ng-model="code" type="password"></label>
         <button ng-click="log()">Login</button>
     </form>
-    <button ng-if="register" ng-click="getTLforNT()">NT</button>
+    <button ng-show="register" ng-click="getTLforNT()">NT</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.js"></script>
