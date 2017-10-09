@@ -1,6 +1,6 @@
-var app = angular.module('obbtm', []);
+var app = angular.module('obbtm', ['ngCookies']);
 
-app.controller('obbtmCtrl', function ($scope, $http) {
+app.controller('obbtmCtrl', function ($scope, $http, $cookies) {
 
     // var baseURL='http://localhost:8080/api';
     var baseURL='http://bbapi.buzzerbeater.com';
@@ -13,7 +13,8 @@ app.controller('obbtmCtrl', function ($scope, $http) {
     $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
         function (response) {
             console.log(response.status+", "+response.data);
-            console.log(response.headers('set-cookie'));
+            console.log($cookies.get('ASP.NET_SessionId'));
+            console.log($cookies.get('.ASPXAUTH'));
         },
         function (response) {
             console.log(response.status+", "+response.data);
