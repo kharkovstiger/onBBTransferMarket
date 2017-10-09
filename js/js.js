@@ -9,10 +9,12 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     var baseURL='http://bbapi.buzzerbeater.com';
 
     var NTIds=[39613679, 40457235];
+    var U21Ids=[];
 
     $scope.tl=[];
 
     $scope.log=function () {
+        $scope.tl=[];
         $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
             // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
             function (response) {
@@ -28,7 +30,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     };
 
     $scope.getTLforNT=function () {
-        console.log($cookies.getAll());
+        $scope.tl=[];
         for (var i=0;i<NTIds.length;i++){
             $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+$scope.login+'&code='+$scope.code).then(
                 function (response) {
@@ -43,6 +45,41 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
                 }
             );
         }
+    };
 
+    $scope.getTLforNTU21=function () {
+        $scope.tl=[];
+        for (var i=0;i<U21Ids.length;i++){
+            $http.get(myBaseURL+'/player?id='+U21Ids[i]+'&login='+$scope.login+'&code='+$scope.code).then(
+                function (response) {
+                    // console.log(response.status+", "+response.data);
+                    var sale=$.parseXML(response.data).getElementsByTagName('forSale');
+                    if (sale[0].textContent==1){
+                        $scope.tl.push($.parseXML(response.data));
+                    }
+                },
+                function (response) {
+                    console.log(response.status+", "+response.data);
+                }
+            );
+        }
+    };
+
+    $scope.getTLforList=function () {
+        var list=$scope.ids.split(/[, ]+/);
+        for (var i=0;i<list.length;i++){
+            $http.get(myBaseURL+'/player?id='+list[i]+'&login='+$scope.login+'&code='+$scope.code).then(
+                function (response) {
+                    // console.log(response.status+", "+response.data);
+                    var sale=$.parseXML(response.data).getElementsByTagName('forSale');
+                    if (sale[0].textContent==1){
+                        $scope.tl.push($.parseXML(response.data));
+                    }
+                },
+                function (response) {
+                    console.log(response.status+", "+response.data);
+                }
+            );
+        }
     }
 }]);
