@@ -11,16 +11,18 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
 
     $scope.tl=[];
 
-    $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
-    // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
-        function (response) {
-            console.log(response);
-            $scope.register=true;
-        },
-        function (response) {
-            console.log(response.status+", "+response.data);
-        }
-    );
+    $scope.log=function () {
+        $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
+            // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
+            function (response) {
+                console.log(response);
+                $scope.register=true;
+            },
+            function (response) {
+                console.log(response.status+", "+response.data);
+            }
+        );
+    };
 
     $scope.getTLforNT=function () {
         console.log($cookies.getAll());

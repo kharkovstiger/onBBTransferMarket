@@ -9,6 +9,7 @@
     <form ng-if="!register">
         <label>Login: <input ng-model="login"></label>
         <label>Secure Code: <input ng-model="code" type="password"></label>
+        <button ng-click="log()">Login</button>
     </form>
     <button ng-if="register" ng-click="getTLforNT()">NT</button>
 
