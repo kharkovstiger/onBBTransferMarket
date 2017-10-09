@@ -2,8 +2,7 @@ var app = angular.module('obbtm', []);
 
 app.controller('obbtmCtrl', function ($scope, $http) {
 
-    var baseURL='https://bbapi.buzzerbeater.com';
-
+    var baseURL='http://bbapi.buzzerbeater.com';
     var NTIds=[39613679, 40457235];
 
     $scope.tl=[];
