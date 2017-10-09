@@ -1,24 +1,19 @@
 var app = angular.module('obbtm', ['ngCookies']);
 
-app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http, $timeout) {
+app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http) {
 
-    // var baseURL='http://localhost:8080/api';
+    var myBaseURL='http://localhost:8080/api';
     var baseURL='http://bbapi.buzzerbeater.com';
 
     var NTIds=[39613679, 40457235];
 
     $scope.tl=[];
 
-    // $http.get(baseURL+'/login?login=lnrstgr&code=katana').then(
-    $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
+    $http.get(myBaseURL+'/login?login=lnrstgr&code=katana').then(
+    // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
         function (response) {
-            console.log(response.status+", "+response.data);
+            console.log(response.data);
             console.log(response.headers);
-
-            $timeout(function(){
-                console.log($cookies.get('ASP.NET_SessionId'));
-                console.log($cookies.get('.ASPXAUTH'));
-            });
         },
         function (response) {
             console.log(response.status+", "+response.data);
