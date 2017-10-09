@@ -18,7 +18,10 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
             // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
             function (response) {
                 console.log(response);
-                $scope.register=true;
+                console.log(response.data.getElementsByTagName('loggedIn'));
+                if (response.data.getElementsByTagName('loggedIn').length>0) {
+                    $scope.register = true;
+                }
             },
             function (response) {
                 console.log(response.status+", "+response.data);
