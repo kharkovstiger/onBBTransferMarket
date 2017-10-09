@@ -10,43 +10,26 @@ app.controller('obbtmCtrl', function ($scope, $http) {
     $scope.tl=[];
 
     // $http.get(baseURL+'/login?login=lnrstgr&code=katana').then(
-    // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
-    //     function (response) {
-    //         console.log(response.status+", "+response.data);
-    //     },
-    //     function (response) {
-    //         console.log(response.status+", "+response.data);
-    //     }
-    // );
+    $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
+        function (response) {
+            console.log(response.status+", "+response.data);
+            console.log(response);
+        },
+        function (response) {
+            console.log(response.status+", "+response.data);
+        }
+    );
 
     $scope.getTLforNT=function () {
-        $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
-            function (response) {
-                console.log(response.status+", "+response.data);
-                for (var i=0;i<NTIds.length;i++){
-                    $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
-                        function (response) {
-                            console.log(response.status+", "+response.data);
-                        },
-                        function (response) {
-                            console.log(response.status+", "+response.data);
-                        }
-                    );
+        for (var i=0;i<NTIds.length;i++){
+            $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
+                function (response) {
+                    console.log(response.status+", "+response.data);
+                },
+                function (response) {
+                    console.log(response.status+", "+response.data);
                 }
-            },
-            function (response) {
-                console.log(response.status+", "+response.data);
-            }
-        );
-        // for (var i=0;i<NTIds.length;i++){
-        //     $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
-        //         function (response) {
-        //             console.log(response.status+", "+response.data);
-        //         },
-        //         function (response) {
-        //             console.log(response.status+", "+response.data);
-        //         }
-        //     );
-        // }
+            );
+        }
     }
 });
