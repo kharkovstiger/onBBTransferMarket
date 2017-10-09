@@ -16,7 +16,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
             console.log(response.headers);
             console.log($cookies.get('ASP.NET_SessionId'));
             console.log($cookies.get('.ASPXAUTH'));
-            console.log($cookies.getAll());
+
         },
         function (response) {
             console.log(response.status+", "+response.data);
@@ -24,6 +24,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     );
 
     $scope.getTLforNT=function () {
+        console.log($cookies.getAll());
         for (var i=0;i<NTIds.length;i++){
             $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
                 function (response) {
