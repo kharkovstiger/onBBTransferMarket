@@ -1,6 +1,6 @@
 var app = angular.module('obbtm', ['ngCookies']);
 
-app.controller('obbtmCtrl', function ($scope, $http, $cookies) {
+app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http) {
 
     // var baseURL='http://localhost:8080/api';
     var baseURL='http://bbapi.buzzerbeater.com';
@@ -33,4 +33,4 @@ app.controller('obbtmCtrl', function ($scope, $http, $cookies) {
             );
         }
     }
-});
+}]);
