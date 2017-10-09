@@ -9,30 +9,26 @@ app.controller('obbtmCtrl', function ($scope, $http) {
 
     $scope.tl=[];
 
-    $.get( baseURL+'/login.aspx?login=lnrstgr&code=katana', function( data ) {
-        console.log(data);
-    });
+    // $http.get(baseURL+'/login?login=lnrstgr&code=katana').then(
+    $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
+        function (response) {
+            console.log(response.status+", "+response.data);
+        },
+        function (response) {
+            console.log(response.status+", "+response.data);
+        }
+    );
 
-    // // $http.get(baseURL+'/login?login=lnrstgr&code=katana').then(
-    // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
-    //     function (response) {
-    //         console.log(response.status+", "+response.data);
-    //     },
-    //     function (response) {
-    //         console.log(response.status+", "+response.data);
-    //     }
-    // );
-    //
-    // $scope.getTLforNT=function () {
-    //     for (var i=0;i<NTIds.length;i++){
-    //         $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
-    //             function (response) {
-    //                 console.log(response.status+", "+response.data);
-    //             },
-    //             function (response) {
-    //                 console.log(response.status+", "+response.data);
-    //             }
-    //         );
-    //     }
-    // }
+    $scope.getTLforNT=function () {
+        for (var i=0;i<NTIds.length;i++){
+            $http.get(baseURL+'/player.aspx?playerid='+NTIds[i]).then(
+                function (response) {
+                    console.log(response.status+", "+response.data);
+                },
+                function (response) {
+                    console.log(response.status+", "+response.data);
+                }
+            );
+        }
+    }
 });
