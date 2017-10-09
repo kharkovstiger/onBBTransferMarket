@@ -35,6 +35,9 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
             $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+$scope.login+'&code='+$scope.code).then(
                 function (response) {
                     console.log(response.status+", "+response.data);
+                    var sale=response.data.getElementsByTagName('forSale');
+                    console.log(sale.val());
+                    console.log(sale.text());
                 },
                 function (response) {
                     console.log(response.status+", "+response.data);
