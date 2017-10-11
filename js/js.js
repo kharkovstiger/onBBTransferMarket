@@ -47,6 +47,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
                     var sale=$.parseXML(response.data).getElementsByTagName('forSale');
                     if (sale[0].textContent==1){
                         $scope.tl.push($.parseXML(response.data));
+                        // console.log(response.data);
                     }
                 },
                 function (response) {

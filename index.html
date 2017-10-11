@@ -21,6 +21,10 @@
                     <th>Id</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Potential</th>
+                    <th>Age</th>
+                    <th>Height</th>
+                    <th>Position</th>
                 </tr>
                 <tr ng-repeat="player in tl">
                     <td><a href="{{'http://www.buzzerbeater.com/player/'+
@@ -28,6 +32,10 @@
                         {{player.getElementsByTagName('player')[0].id}}</a></td>
                     <td>{{player.getElementsByTagName('firstName')[0].textContent}}</td>
                     <td>{{player.getElementsByTagName('lastName')[0].textContent}}</td>
+                    <td>{{player.getElementsByTagName('potential')[0].textContent}}</td>
+                    <td>{{player.getElementsByTagName('age')[0].textContent}}</td>
+                    <td>{{player.getElementsByTagName('height')[0].textContent}}</td>
+                    <td>{{player.getElementsByTagName('bestPosition')[0].textContent}}</td>
                 </tr>
             </table>
         </div>
