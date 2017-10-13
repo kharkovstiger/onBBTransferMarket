@@ -1,0 +1,40 @@
+<div ng-controller="transferCtrl" ng-cloak>
+    <p><a href="#/!">Back to main</a></p>
+    <p>
+        Who is on TL from NT list
+        <button ng-click="getTLforNT()">NT</button>
+    </p>
+    <p>
+        Who is on TL from U21 list
+        <button ng-click="getTLforNTU21()">NT U21</button>
+    </p>
+    <p>
+        Who is on TL from next list:
+        <textarea ng-model="ids"></textarea> <button ng-click="getTLforList()">List</button>
+    </p>
+    <div ng-show="tl.length===0">No one player from list is on transfer market</div>
+    <div ng-show="tl.length>0">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Potential</th>
+                <th>Age</th>
+                <th>Height</th>
+                <th>Position</th>
+            </tr>
+            <tr ng-repeat="player in tl">
+                <td><a href="{{'http://www.buzzerbeater.com/player/'+
+                        player.getElementsByTagName('player')[0].id+'/overview.aspx'}}">
+                    {{player.getElementsByTagName('player')[0].id}}</a></td>
+                <td>{{player.getElementsByTagName('firstName')[0].textContent}}</td>
+                <td>{{player.getElementsByTagName('lastName')[0].textContent}}</td>
+                <td>{{player.getElementsByTagName('potential')[0].textContent}}</td>
+                <td>{{player.getElementsByTagName('age')[0].textContent}}</td>
+                <td>{{player.getElementsByTagName('height')[0].textContent}}</td>
+                <td>{{player.getElementsByTagName('bestPosition')[0].textContent}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

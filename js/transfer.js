@@ -1,9 +1,4 @@
-var app = angular.module('obbtm', ['ngCookies']);
-
-app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $scope, $http) {
-
-    $scope.register=false;
-    $scope.isDisable=false;
+app.controller('transferCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
 
     var myLocalBaseURL='http://localhost:8080/api';
     var myBaseURL='https://forbb.herokuapp.com/api';
@@ -22,26 +17,13 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
 
     $scope.tl=[];
 
-    $scope.log=function () {
-        $scope.isDisable=true;
-        $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code).then(
-            // $http.get(baseURL+'/login.aspx?login=lnrstgr&code=katana').then(
-            function (response) {
-                // console.log(response.data);
-                if ($.parseXML(response.data).getElementsByTagName('loggedIn').length>0) {
-                    $scope.register = true;
-                }
-            },
-            function (response) {
-                console.log(response.status+", "+response.data);
-            }
-        );
-    };
+    var data=credentials.get();
 
     $scope.getTLforNT=function () {
         $scope.tl=[];
         for (var i=0;i<NTIds.length;i++){
-            $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+$scope.login+'&code='+$scope.code).then(
+
+            $http.get(myBaseURL+'/player?id='+NTIds[i]+'&login='+data.login+'&code='+data.code).then(
                 function (response) {
                     // console.log(response.status+", "+response.data);
                     var sale=$.parseXML(response.data).getElementsByTagName('forSale');
@@ -60,7 +42,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
     $scope.getTLforNTU21=function () {
         $scope.tl=[];
         for (var i=0;i<U21Ids.length;i++){
-            $http.get(myBaseURL+'/player?id='+U21Ids[i]+'&login='+$scope.login+'&code='+$scope.code).then(
+            $http.get(myBaseURL+'/player?id='+U21Ids[i]+'&login='+data.login+'&code='+data.code).then(
                 function (response) {
                     // console.log(response.status+", "+response.data);
                     var sale=$.parseXML(response.data).getElementsByTagName('forSale');
@@ -80,7 +62,7 @@ app.controller('obbtmCtrl', ['$cookies', '$scope','$http', function($cookies, $s
         var list=$scope.ids.split(/[, \n]/);
         console.log(list);
         for (var i=0;i<list.length;i++){
-            $http.get(myBaseURL+'/player?id='+list[i]+'&login='+$scope.login+'&code='+$scope.code).then(
+            $http.get(myBaseURL+'/player?id='+list[i]+'&login='+data.login+'&code='+data.code).then(
                 function (response) {
                     // console.log(response.status+", "+response.data);
                     var sale=$.parseXML(response.data).getElementsByTagName('forSale');

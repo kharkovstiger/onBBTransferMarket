@@ -1,49 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="obbtm" ng-controller="obbtmCtrl" ng-cloak>
+<html lang="en" ng-app="mybb" ng-cloak>
 <head>
     <meta charset="UTF-8">
-    <title>OnBBTM</title>
+    <title>My BB</title>
+    <link type="text/css" href="css/ukrteams.css" rel="stylesheet">
 </head>
 <body>
 
-    <form ng-hide="register">
-        <label>Login: <input ng-model="login"></label>
-        <label>Secure Code: <input ng-model="code" type="password"></label>
-        <button ng-disabled="isDisable" ng-click="log()">Login</button>
-    </form>
-    <div ng-show="register">
-        <button ng-click="getTLforNT()">NT</button> <button ng-click="getTLforNTU21()">NT U21</button><br>
-        <textarea ng-model="ids"></textarea> <button ng-click="getTLforList()">List</button>
-        <div ng-show="tl.length===0">No one player from list is on transfer market</div>
-        <div ng-show="tl.length>0">
-            <table>
-                <tr>
-                    <th>Id</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Potential</th>
-                    <th>Age</th>
-                    <th>Height</th>
-                    <th>Position</th>
-                </tr>
-                <tr ng-repeat="player in tl">
-                    <td><a href="{{'http://www.buzzerbeater.com/player/'+
-                    player.getElementsByTagName('player')[0].id+'/overview.aspx'}}">
-                        {{player.getElementsByTagName('player')[0].id}}</a></td>
-                    <td>{{player.getElementsByTagName('firstName')[0].textContent}}</td>
-                    <td>{{player.getElementsByTagName('lastName')[0].textContent}}</td>
-                    <td>{{player.getElementsByTagName('potential')[0].textContent}}</td>
-                    <td>{{player.getElementsByTagName('age')[0].textContent}}</td>
-                    <td>{{player.getElementsByTagName('height')[0].textContent}}</td>
-                    <td>{{player.getElementsByTagName('bestPosition')[0].textContent}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <div ng-view></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="js/js.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/transfer.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/ukrteams.js"></script>
 </body>
 </html>
