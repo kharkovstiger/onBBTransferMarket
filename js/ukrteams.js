@@ -54,22 +54,59 @@ app.controller('teamsCtrl', ['$scope', '$http', 'credentials', function($scope, 
         };
     }
 
+    var sort=null;
+
     $scope.sort=function (by) {
         switch (by){
             case 'name':
-                $scope.teams.sort(function(a,b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
+                if (sort===1) {
+                    $scope.teams.sort(function (a, b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);});
+                    sort=0;
+                }
+                else{
+                    $scope.teams.sort(function(a,b) {return (a.name < b.name) ? 1 : ((b.name < a.name) ? -1 : 0);} );
+                    sort=1;
+                }
                 break;
             case 'league':
-                $scope.teams.sort(function(a,b) {return (a.league > b.league) ? 1 : ((b.league > a.league) ? -1 : 0);} );
+                if (sort===2) {
+                    $scope.teams.sort(function(a,b) {return (a.league > b.league) ? 1 : ((b.league > a.league) ? -1 : 0);} );
+                    sort=0;
+                }
+                else{
+                    $scope.teams.sort(function(a,b) {return (a.league < b.league) ? 1 : ((b.league < a.league) ? -1 : 0);} );
+                    sort=2;
+                }
                 break;
             case 'owner':
-                $scope.teams.sort(function(a,b) {return (a.owner > b.owner) ? 1 : ((b.owner > a.owner) ? -1 : 0);} );
+                if (sort===3) {
+                    $scope.teams.sort(function(a,b) {return (a.owner > b.owner) ? 1 : ((b.owner > a.owner) ? -1 : 0);} );
+                    sort=0;
+                }
+                else{
+                    $scope.teams.sort(function(a,b) {return (a.owner < b.owner) ? 1 : ((b.owner < a.owner) ? -1 : 0);} );
+                    sort=3;
+                }
                 break;
             case 'create':
-                $scope.teams.sort(function(a,b) {return (a.create > b.create) ? 1 : ((b.create > a.create) ? -1 : 0);} );
+                if (sort===4) {
+                    $scope.teams.sort(function(a,b) {return (a.create > b.create) ? 1 : ((b.create > a.create) ? -1 : 0);} );
+                    sort=0;
+                }
+                else{
+                    $scope.teams.sort(function(a,b) {return (a.create < b.create) ? 1 : ((b.create < a.create) ? -1 : 0);} );
+                    sort=4;
+                }
                 break;
             case 'last':
-                $scope.teams.sort(function(a,b) {return (a.last > b.last) ? 1 : ((b.last > a.last) ? -1 : 0);} );
+                if (sort===5) {
+                    $scope.teams.sort(function(a,b) {return (a.last > b.last) ? 1 : ((b.last > a.last) ? -1 : 0);} );
+                    sort=0;
+                }
+                else{
+                    $scope.teams.sort(function(a,b) {return (a.last < b.last) ? 1 : ((b.last < a.last) ? -1 : 0);} );
+                    sort=5;
+                }
                 break;
             default:
                 break;
