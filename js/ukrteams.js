@@ -1,8 +1,6 @@
 app.controller('teamsCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
 
-    var myLocalBaseURL='http://localhost:8080/api';
-    var myBaseURL='https://forbb.herokuapp.com/api';
-    var baseURL='http://bbapi.buzzerbeater.com';
+    var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
 
     $scope.isDisable=false;
     var data=credentials.get();

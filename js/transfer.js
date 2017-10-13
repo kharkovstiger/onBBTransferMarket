@@ -1,8 +1,6 @@
 app.controller('transferCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
 
-    var myLocalBaseURL='http://localhost:8080/api';
-    var myBaseURL='https://forbb.herokuapp.com/api';
-    var baseURL='http://bbapi.buzzerbeater.com';
+    var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
 
     var NTIds=[33959724,30156569,31128996,31128671,33080423,33080377,33959713,34775441,41271620,
         36441708,37246533,33080145,33080700,37246076,32180287,33080896,33959834,37246080,34775421,35622109,36442102,

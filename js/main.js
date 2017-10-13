@@ -4,9 +4,7 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', function($scope, $
     $scope.isDisable=false;
     $scope.register = 'undefined' !== typeof data.login;
 
-    var myLocalBaseURL='http://localhost:8080/api';
-    var myBaseURL='https://forbb.herokuapp.com/api';
-    var baseURL='http://bbapi.buzzerbeater.com';
+    var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
 
     $scope.log=function () {
         $scope.isDisable=true;

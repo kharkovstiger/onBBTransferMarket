@@ -11,6 +11,15 @@ app.config(function($routeProvider) {
         .when("/ukrteams", {
             templateUrl : "ukrteams.html"
         })
+        .when("/ukr", {
+            templateUrl : "ukr.html"
+        })
+        .when("/nt", {
+            templateUrl : "nt.html"
+        })
+        .when("/u21", {
+            templateUrl : "u21.html"
+        })
 });
 
 app.factory('credentials', function() {

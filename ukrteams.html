@@ -11,13 +11,6 @@
             <th ng-click="sort('last')">Was online</th>
         </tr>
         <tr ng-repeat="team in teams">
-            <!--<td><a href="{{'http://www.buzzerbeater.com/team/'+-->
-                        <!--team.getElementsByTagName('team')[0].getAttribute('id')+'/overview.aspx'}}">-->
-                <!--{{team.getElementsByTagName('teamName')[0].textContent}}</a></td>-->
-            <!--<td>{{team.getElementsByTagName('owner')[0].textContent}}</td>-->
-            <!--<td>{{team.getElementsByTagName('league')[0].textContent}}</td>-->
-            <!--<td>{{team.getElementsByTagName('createDate')[0].textContent.substring(0,10)}}</td>-->
-            <!--<td>{{team.getElementsByTagName('lastLoginDate')[0].textContent.substring(0,10)}}</td>-->
             <td><a href="{{'http://www.buzzerbeater.com/team/'+
                         team.id+'/overview.aspx'}}">
                 {{team.name}}</a></td>
