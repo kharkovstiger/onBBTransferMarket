@@ -20,6 +20,12 @@ app.config(function($routeProvider) {
         .when("/u21", {
             templateUrl : "u21.html"
         })
+        .when("/titles", {
+            templateUrl : "titles.html"
+        })
+        .when("/finals", {
+            templateUrl : "finals.html"
+        })
 });
 
 app.factory('credentials', function() {

@@ -1,0 +1,25 @@
+<div ng-controller="ukrCtrl" ng-cloak>
+    <p><a href="#!ukr">Back</a></p>
+
+    <table>
+        <tr>
+            <th ng-click="sort('name')">Name</th>
+            <th ng-click="sort('titles')">Titles</th>
+            <th ng-click="sort('finals')">Finals</th>
+            <th ng-click="sort('SL')">SL Winners</th>
+            <th ng-click="sort('SLF')">SL Finals</th>
+            <th ng-click="sort('cup')">Cup Winners</th>
+            <th ng-click="sort('cupF')">Cup Finals</th>
+        </tr>
+        <tr ng-repeat="team in teams">
+            <td><a href="{{team.href}}">
+                {{team.name}}</a></td>
+            <td>{{team.league+team.cup}}</td>
+            <td>{{team.leagueFinal+team.cupFinal}}</td>
+            <td>{{team.league}}</td>
+            <td>{{team.leagueFinal}}</td>
+            <td>{{team.cup}}</td>
+            <td>{{team.cupFinal}}</td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,24 @@
+<div ng-controller="finalsCtrl" ng-cloak>
+    <p><a href="#!ukr">Back</a></p>
+
+    <table>
+        <caption>Cup History</caption>
+        <tr>
+            <th ng-click="sort('season')">Season</th>
+            <th ng-click="sort('winner')">Winner</th>
+            <th ng-click="sort('runner')">Runner Up</th>
+            <th ng-click="sort('result')">Result</th>
+        </tr>
+        <tr ng-repeat="team in teams">
+            <td>{{team.game.season}}</td>
+            <td><a href="{{team.winner.href}}">
+                {{team.winner.name+'('+team.winner.league+')'}}</a></td>
+            <td><a href="{{team.runnerUp.href}}">
+                {{team.runnerUp.name+'('+team.runnerUp.league+')'}}</a></td>
+            <td ><a ng-show="team.game.OT>0" href="{{team.game.href}}">
+                {{team.winner.result+':'+team.runnerUp.result+' ('+team.game.OT+'OT)'}}</a>
+                <a ng-show="team.game.OT===0" href="{{team.game.href}}">
+                    {{team.winner.result+':'+team.runnerUp.result}}</a></td>
+        </tr>
+    </table>
+</div>
