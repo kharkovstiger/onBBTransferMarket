@@ -5,7 +5,7 @@ app.controller('ukrCtrl', ['$scope', '$http', 'credentials', function($scope, $h
     var url='http://www.buzzerbeater.com';
 
     var data=credentials.get();
-    $scope.teams=[];
+    $scope.cups=[];
 
     $http.get(myBaseURL2+'/country').then(
         function (response) {
@@ -39,28 +39,28 @@ app.controller('ukrCtrl', ['$scope', '$http', 'credentials', function($scope, $h
     );
 
     function teamConstructor(obj,n) {
-        for(var i=0;i<$scope.teams.length;i++){
-            if($scope.teams[i].name===obj.textContent){
+        for(var i=0; i<$scope.cups.length; i++){
+            if($scope.cups[i].name===obj.textContent){
                 switch (n){
                     case 1:
-                        $scope.teams[i].league+=1;
-                        $scope.teams[i].leagueFinal+=1;
+                        $scope.cups[i].league+=1;
+                        $scope.cups[i].leagueFinal+=1;
                         break;
                     case 2:
-                        $scope.teams[i].leagueFinal+=1;
+                        $scope.cups[i].leagueFinal+=1;
                         break;
                     case 3:
-                        $scope.teams[i].cup+=1;
-                        $scope.teams[i].cupFinal+=1;
+                        $scope.cups[i].cup+=1;
+                        $scope.cups[i].cupFinal+=1;
                         break;
                     case 4:
-                        $scope.teams[i].cupFinal+=1;
+                        $scope.cups[i].cupFinal+=1;
                         break;
                 }
                 return;
             }
         }
-        $scope.teams.push({
+        $scope.cups.push({
             'href': url+obj.getAttribute('href').split('..\/..'),
             'name': obj.textContent,
             'league': n===1?1:0,
@@ -76,71 +76,71 @@ app.controller('ukrCtrl', ['$scope', '$http', 'credentials', function($scope, $h
         switch (by){
             case 'name':
                 if (sort===1) {
-                    $scope.teams.sort(function (a, b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);});
+                    $scope.cups.sort(function (a, b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);});
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.name < b.name) ? 1 : ((b.name < a.name) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.name < b.name) ? 1 : ((b.name < a.name) ? -1 : 0);} );
                     sort=1;
                 }
                 break;
             case 'SL':
                 if (sort===2) {
-                    $scope.teams.sort(function(a,b) {return (a.league > b.league) ? 1 : ((b.league > a.league) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.league > b.league) ? 1 : ((b.league > a.league) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.league < b.league) ? 1 : ((b.league < a.league) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.league < b.league) ? 1 : ((b.league < a.league) ? -1 : 0);} );
                     sort=2;
                 }
                 break;
             case 'SLF':
                 if (sort===3) {
-                    $scope.teams.sort(function(a,b) {return (a.leagueFinal > b.leagueFinal) ? 1 : ((b.leagueFinal > a.leagueFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.leagueFinal > b.leagueFinal) ? 1 : ((b.leagueFinal > a.leagueFinal) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.leagueFinal < b.leagueFinal) ? 1 : ((b.leagueFinal < a.leagueFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.leagueFinal < b.leagueFinal) ? 1 : ((b.leagueFinal < a.leagueFinal) ? -1 : 0);} );
                     sort=3;
                 }
                 break;
             case 'cup':
                 if (sort===4) {
-                    $scope.teams.sort(function(a,b) {return (a.cup > b.cup) ? 1 : ((b.cup > a.cup) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cup > b.cup) ? 1 : ((b.cup > a.cup) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.cup < b.cup) ? 1 : ((b.cup < a.cup) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cup < b.cup) ? 1 : ((b.cup < a.cup) ? -1 : 0);} );
                     sort=4;
                 }
                 break;
             case 'cupF':
                 if (sort===5) {
-                    $scope.teams.sort(function(a,b) {return (a.cupFinal > b.cupFinal) ? 1 : ((b.cupFinal > a.cupFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cupFinal > b.cupFinal) ? 1 : ((b.cupFinal > a.cupFinal) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.cupFinal < b.cupFinal) ? 1 : ((b.cupFinal < a.cupFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cupFinal < b.cupFinal) ? 1 : ((b.cupFinal < a.cupFinal) ? -1 : 0);} );
                     sort=5;
                 }
                 break;
             case 'titles':
                 if (sort===6) {
-                    $scope.teams.sort(function(a,b) {return (a.cup+a.league > b.cup+b.league) ? 1 : ((b.cup+b.league > a.cup+a.league) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cup+a.league > b.cup+b.league) ? 1 : ((b.cup+b.league > a.cup+a.league) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.cup+a.league < b.cup+b.league) ? 1 : ((b.cup+b.league < a.cup+a.league) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cup+a.league < b.cup+b.league) ? 1 : ((b.cup+b.league < a.cup+a.league) ? -1 : 0);} );
                     sort=6;
                 }
                 break;
             case 'finals':
                 if (sort===7) {
-                    $scope.teams.sort(function(a,b) {return (a.cupFinal+a.leagueFinal > b.cupFinal+b.leagueFinal) ? 1 : ((b.cupFinal+b.leagueFinal > a.cupFinal+a.leagueFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cupFinal+a.leagueFinal > b.cupFinal+b.leagueFinal) ? 1 : ((b.cupFinal+b.leagueFinal > a.cupFinal+a.leagueFinal) ? -1 : 0);} );
                     sort=0;
                 }
                 else{
-                    $scope.teams.sort(function(a,b) {return (a.cupFinal+a.leagueFinal < b.cupFinal+b.leagueFinal) ? 1 : ((b.cupFinal+b.leagueFinal < a.cupFinal+a.leagueFinal) ? -1 : 0);} );
+                    $scope.cups.sort(function(a, b) {return (a.cupFinal+a.leagueFinal < b.cupFinal+b.leagueFinal) ? 1 : ((b.cupFinal+b.leagueFinal < a.cupFinal+a.leagueFinal) ? -1 : 0);} );
                     sort=7;
                 }
                 break;

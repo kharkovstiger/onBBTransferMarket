@@ -11,7 +11,7 @@
             <th ng-click="sort('cup')">Cup Winners</th>
             <th ng-click="sort('cupF')">Cup Finals</th>
         </tr>
-        <tr ng-repeat="team in teams">
+        <tr ng-repeat="team in cups">
             <td><a href="{{team.href}}">
                 {{team.name}}</a></td>
             <td>{{team.league+team.cup}}</td>
