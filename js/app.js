@@ -11,9 +11,6 @@ app.config(function($routeProvider) {
         .when("/ukrteams", {
             templateUrl : "ukrteams.html"
         })
-        .when("/ukr", {
-            templateUrl : "ukr.html"
-        })
         .when("/nt", {
             templateUrl : "nt.html"
         })
