@@ -2,7 +2,7 @@
     <p>To get statistics over the list of games. Put list of game Ids into textarea.</p>
     <textarea ng-model="list"></textarea><button ng-click="getStats()">Get</button>
 
-    <p>To get statistics over all history <button ng-click="stats(gameIds)">Get</button></p>
+    <p>To get statistics over all history <button ng-click="stats(gameIds)">Get</button></p
 
     <button ng-click="getAverages()">Get Averages</button>
     <!--<button ng-click="getNames()">Get Names</button>-->
@@ -28,7 +28,7 @@
             <th ng-click="sortBy('fouls')">Foul</th>
         </tr>
         <tr ng-repeat="game in games | orderBy:propertyName:reverse" ng-style="{'color': game.points>game.pointsAgainst?'blue':'red'}">
-            <td>{{game.date}}</td>
+            <td><a href="http://www.buzzerbeater.com/match/{{game.id}}/boxscore.aspx">{{game.date}}</a></td>
             <td>{{game.opponent}}</td>
             <td>{{game.gameType}}</td>
             <td>{{game.points}}</td>
@@ -107,7 +107,7 @@
         </tr>
         <tr ng-repeat="player in players | orderBy:propertyName:reverse">
             <td>{{player.firstName}}</td>
-            <td>{{player.lastName}}</td>
+            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/boxscore.aspx">{{player.lastName}}</a></td>
             <td>{{player.games}}</td>
             <td>{{player.minutes}}</td>
             <td>{{player.fg}}</td>

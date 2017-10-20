@@ -716,14 +716,19 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     $scope.triplDouble=0;
     $scope.doubleDouble=0;
     $scope.twenty=0;
-    // $scope.games=[];
-    // $scope.players=[];
+    $scope.games=[];
+    $scope.players=[];
 
     $scope.getStats=function () {
         $scope.stats($scope.list.split(/[, \n]/));
     };
 
     $scope.stats=function(list) {
+        $scope.pentaDouble=0;
+        $scope.quadroDouble=0;
+        $scope.triplDouble=0;
+        $scope.doubleDouble=0;
+        $scope.twenty=0;
         $scope.games=[];
         $scope.players=[];
         for(var i=0;i<list.length;i++) {
@@ -774,7 +779,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                         var q=0;
                         if (tds.length>15)
                             q=1;
-                        isTripl(tds,q);
                         isTwenty(tds,q);
                         $scope.players[j].games+=1;
                         $scope.players[j].minutes+=parseInt(tds[2].textContent.trim());
@@ -878,7 +882,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         var q=0;
         if (tds.length>15)
             q=1;
-        isTripl(tds,q);
         isTwenty(tds,q);
         return{
             'id':id,
