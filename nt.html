@@ -5,29 +5,29 @@
     <p>To get statistics over all history <button ng-click="stats(gameIds)">Get</button></p>
 
     <button ng-click="getAverages()">Get Averages</button>
-    <button ng-click="getNames()">Get Names</button>
-    <table>
+    <!--<button ng-click="getNames()">Get Names</button>-->
+    <table >
         <caption>Games</caption>
         <tr>
-            <th ng-click="sort('season',cups)">Date</th>
-            <th ng-click="sort('winner',cups)">Opponent</th>
-            <th ng-click="sort('runner',cups)">Type</th>
-            <th ng-click="sort('result')" colspan="2">Result</th>
-            <th>FG</th>
-            <th>FGA</th>
-            <th>3FG</th>
-            <th>3FGA</th>
-            <th>FT</th>
-            <th>FTA</th>
-            <th>OR</th>
-            <th>Reb</th>
-            <th>Ass</th>
-            <th>TO</th>
-            <th>Stl</th>
-            <th>Block</th>
-            <th>Foul</th>
+            <th ng-click="sortBy('date')">Date</th>
+            <th ng-click="sortBy('opponent')">Opponent</th>
+            <th ng-click="sortBy('gameType')">Type</th>
+            <th ng-click="sortBy('result')" colspan="2">Result</th>
+            <th ng-click="sortBy('fg')">FG</th>
+            <th ng-click="sortBy('fga')">FGA</th>
+            <th ng-click="sortBy('tpt')">3FG</th>
+            <th ng-click="sortBy('tpta')">3FGA</th>
+            <th ng-click="sortBy('ft')">FT</th>
+            <th ng-click="sortBy('fta')">FTA</th>
+            <th ng-click="sortBy('oReb')">OR</th>
+            <th ng-click="sortBy('reb')">Reb</th>
+            <th ng-click="sortBy('assists')">Ass</th>
+            <th ng-click="sortBy('turnovers')">TO</th>
+            <th ng-click="sortBy('steals')">Stl</th>
+            <th ng-click="sortBy('blocks')">Block</th>
+            <th ng-click="sortBy('fouls')">Foul</th>
         </tr>
-        <tr ng-repeat="game in games" ng-style="{'color': game.points>game.pointsAgainst?'blue':'red'}">
+        <tr ng-repeat="game in games | orderBy:propertyName:reverse" ng-style="{'color': game.points>game.pointsAgainst?'blue':'red'}">
             <td>{{game.date}}</td>
             <td>{{game.opponent}}</td>
             <td>{{game.gameType}}</td>
@@ -81,30 +81,31 @@
     <table ng-show="type==='total'">
         <caption>Players</caption>
         <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Games</th>
-            <th>Minutes</th>
-            <th>FG</th>
-            <th>FGA</th>
-            <th>FG%</th>
-            <th>3FG</th>
-            <th>3FGA</th>
-            <th>3FG%</th>
-            <th>FT</th>
-            <th>FTA</th>
-            <th>FT%</th>
-            <th>+-</th>
-            <th>OR</th>
-            <th>Reb</th>
-            <th>Ass</th>
-            <th>TO</th>
-            <th>Stl</th>
-            <th>Block</th>
-            <th>Foul</th>
-            <th>Points</th>
+            <th ng-click="sortBy('firstName')">Name</th>
+            <th ng-click="sortBy('lastName')">Surname</th>
+            <th ng-click="sortBy('games')">Games</th>
+            <th ng-click="sortBy('minutes')">Minutes</th>
+            <th ng-click="sortBy('fg')">FG</th>
+            <th ng-click="sortBy('fga')">FGA</th>
+            <th ng-click="sortBy('fgp')">FG%</th>
+            <th ng-click="sortBy('tpt')">3FG</th>
+            <th ng-click="sortBy('tpta')">3FGA</th>
+            <th ng-click="sortBy('tptp')">3FG%</th>
+            <th ng-click="sortBy('ft')">FT</th>
+            <th ng-click="sortBy('fta')">FTA</th>
+            <th ng-click="sortBy('ftp')">FT%</th>
+            <th ng-click="sortBy('plusminus')">+-</th>
+            <th ng-click="sortBy('oReb')">OR</th>
+            <th ng-click="sortBy('reb')">Reb</th>
+            <th ng-click="sortBy('assists')">Ass</th>
+            <th ng-click="sortBy('turnovers')">TO</th>
+            <th ng-click="sortBy('steals')">Stl</th>
+            <th ng-click="sortBy('blocks')">Block</th>
+            <th ng-click="sortBy('fouls')">Foul</th>
+            <th ng-click="sortBy('points')">Points</th>
+            <th ng-click="sortBy('dd')">DoubleDoubles</th>
         </tr>
-        <tr ng-repeat="player in players">
+        <tr ng-repeat="player in players | orderBy:propertyName:reverse">
             <td>{{player.firstName}}</td>
             <td>{{player.lastName}}</td>
             <td>{{player.games}}</td>
@@ -127,6 +128,7 @@
             <td>{{player.blocks}}</td>
             <td>{{player.fouls}}</td>
             <td>{{player.points}}</td>
+            <td>{{player.dd}}</td>
         </tr>
     </table>
 
@@ -229,6 +231,29 @@
             <td>{{round(player.blocks/player.minutes*48)}}</td>
             <td>{{round(player.fouls/player.minutes*48)}}</td>
             <td>{{round(player.points/player.minutes*48)}}</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>Double-Doubles</td>
+            <td>{{doubleDouble}}</td>
+        </tr>
+        <tr>
+            <td>Triple-Doubles</td>
+            <td>{{triplDouble}}</td>
+        </tr>
+        <tr>
+            <td>Quadrouple-Doubles</td>
+            <td>{{quadroDouble}}</td>
+        </tr>
+        <tr>
+            <td>Pentaple-Doubles</td>
+            <td>{{pentaDouble}}</td>
+        </tr>
+        <tr>
+            <td>20+20</td>
+            <td>{{twenty}}</td>
         </tr>
     </table>
 </div>
