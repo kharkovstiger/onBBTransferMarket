@@ -1,2 +1,259 @@
 <div ng-controller="u21Ctrl" ng-cloak>
+    <p>To get statistics over the list of games. Put list of game Ids into textarea.</p>
+    <textarea ng-model="list"></textarea><button ng-click="getStats()">Get</button>
+
+    <p>To get statistics over all history <button ng-click="stats(gameIds)">Get</button></p>
+
+    <button ng-click="getAverages()">Get Averages</button>
+    <!--<button ng-click="getNames()">Get Names</button>-->
+    <table >
+        <caption>Games</caption>
+        <tr>
+            <th ng-click="sortBy('date')">Date</th>
+            <th ng-click="sortBy('opponent')">Opponent</th>
+            <th ng-click="sortBy('gameType')">Type</th>
+            <th ng-click="sortBy('result')" colspan="2">Result</th>
+            <th ng-click="sortBy('fg')">FG</th>
+            <th ng-click="sortBy('fga')">FGA</th>
+            <th ng-click="sortBy('tpt')">3FG</th>
+            <th ng-click="sortBy('tpta')">3FGA</th>
+            <th ng-click="sortBy('ft')">FT</th>
+            <th ng-click="sortBy('fta')">FTA</th>
+            <th ng-click="sortBy('oReb')">OR</th>
+            <th ng-click="sortBy('reb')">Reb</th>
+            <th ng-click="sortBy('assists')">Ass</th>
+            <th ng-click="sortBy('turnovers')">TO</th>
+            <th ng-click="sortBy('steals')">Stl</th>
+            <th ng-click="sortBy('blocks')">Block</th>
+            <th ng-click="sortBy('fouls')">Foul</th>
+        </tr>
+        <tr ng-repeat="game in games | orderBy:propertyName:reverse" ng-style="{'color': game.points>game.pointsAgainst?'blue':'red'}">
+            <td><a href="http://www.buzzerbeater.com/match/{{game.id}}/boxscore.aspx">{{game.date}}</a></td>
+            <td>{{game.opponent}}</td>
+            <td>{{game.gameType}}</td>
+            <td>{{game.points}}</td>
+            <td>{{game.pointsAgainst}}</td>
+            <td>{{game.fg}}</td>
+            <td>{{game.fga}}</td>
+            <td>{{game.tpt}}</td>
+            <td>{{game.tpta}}</td>
+            <td>{{game.ft}}</td>
+            <td>{{game.fta}}</td>
+            <td>{{game.oReb}}</td>
+            <td>{{game.reb}}</td>
+            <td>{{game.assists}}</td>
+            <td>{{game.turnovers}}</td>
+            <td>{{game.steals}}</td>
+            <td>{{game.blocks}}</td>
+            <td>{{game.fouls}}</td>
+        </tr>
+        <tr>
+            <td colspan="3">Averages</td>
+            <td>{{round(average.points/games.length)}}</td>
+            <td>{{round(average.pointsAgainst/games.length)}}</td>
+            <td>{{round(average.fg/games.length)}}</td>
+            <td>{{round(average.fga/games.length)}}</td>
+            <td>{{round(average.tpt/games.length)}}</td>
+            <td>{{round(average.tpta/games.length)}}</td>
+            <td>{{round(average.ft/games.length)}}</td>
+            <td>{{round(average.fta/games.length)}}</td>
+            <td>{{round(average.oReb/games.length)}}</td>
+            <td>{{round(average.reb/games.length)}}</td>
+            <td>{{round(average.assists/games.length)}}</td>
+            <td>{{round(average.turnovers/games.length)}}</td>
+            <td>{{round(average.steals/games.length)}}</td>
+            <td>{{round(average.blocks/games.length)}}</td>
+            <td>{{round(average.fouls/games.length)}}</td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+            <td colspan="2">{{percent(average.fg,average.fga)+'%'}}</td>
+            <td colspan="2">{{percent(average.tpt,average.tpta)+'%'}}</td>
+            <td colspan="2">{{percent(average.ft,average.fta)+'%'}}</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <button ng-init="type='total'" ng-click="type='total'">Total</button>
+    <button ng-click="type='game'">Per Game</button>
+    <button ng-click="type='min'">Per 48 min</button>
+    <table ng-show="type==='total'">
+        <caption>Players</caption>
+        <tr>
+            <th ng-click="sortBy('firstName')">Name</th>
+            <th ng-click="sortBy('lastName')">Surname</th>
+            <th ng-click="sortBy('games')">Games</th>
+            <th ng-click="sortBy('minutes')">Minutes</th>
+            <th ng-click="sortBy('fg')">FG</th>
+            <th ng-click="sortBy('fga')">FGA</th>
+            <th ng-click="sortBy('fgp')">FG%</th>
+            <th ng-click="sortBy('tpt')">3FG</th>
+            <th ng-click="sortBy('tpta')">3FGA</th>
+            <th ng-click="sortBy('tptp')">3FG%</th>
+            <th ng-click="sortBy('ft')">FT</th>
+            <th ng-click="sortBy('fta')">FTA</th>
+            <th ng-click="sortBy('ftp')">FT%</th>
+            <th ng-click="sortBy('plusminus')">+-</th>
+            <th ng-click="sortBy('oReb')">OR</th>
+            <th ng-click="sortBy('reb')">Reb</th>
+            <th ng-click="sortBy('assists')">Ass</th>
+            <th ng-click="sortBy('turnovers')">TO</th>
+            <th ng-click="sortBy('steals')">Stl</th>
+            <th ng-click="sortBy('blocks')">Block</th>
+            <th ng-click="sortBy('fouls')">Foul</th>
+            <th ng-click="sortBy('points')">Points</th>
+            <th ng-click="sortBy('dd')">DoubleDoubles</th>
+        </tr>
+        <tr ng-repeat="player in players | orderBy:propertyName:reverse">
+            <td>{{player.firstName}}</td>
+            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/boxscore.aspx">{{player.lastName}}</a></td>
+            <td>{{player.games}}</td>
+            <td>{{player.minutes}}</td>
+            <td>{{player.fg}}</td>
+            <td>{{player.fga}}</td>
+            <td>{{player.fgp+'%'}}</td>
+            <td>{{player.tpt}}</td>
+            <td>{{player.tpta}}</td>
+            <td>{{player.tptp+'%'}}</td>
+            <td>{{player.ft}}</td>
+            <td>{{player.fta}}</td>
+            <td>{{player.ftp+'%'}}</td>
+            <td>{{player.plusminus}}</td>
+            <td>{{player.oReb}}</td>
+            <td>{{player.reb}}</td>
+            <td>{{player.assists}}</td>
+            <td>{{player.turnovers}}</td>
+            <td>{{player.steals}}</td>
+            <td>{{player.blocks}}</td>
+            <td>{{player.fouls}}</td>
+            <td>{{player.points}}</td>
+            <td>{{player.dd}}</td>
+        </tr>
+    </table>
+
+    <table ng-show="type==='game'">
+        <caption>Players per game</caption>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Games</th>
+            <th>Minutes</th>
+            <th>FG</th>
+            <th>FGA</th>
+            <th>FG%</th>
+            <th>3FG</th>
+            <th>3FGA</th>
+            <th>3FG%</th>
+            <th>FT</th>
+            <th>FTA</th>
+            <th>FT%</th>
+            <th>+-</th>
+            <th>OR</th>
+            <th>Reb</th>
+            <th>Ass</th>
+            <th>TO</th>
+            <th>Stl</th>
+            <th>Block</th>
+            <th>Foul</th>
+            <th>Points</th>
+        </tr>
+        <tr ng-repeat="player in players">
+            <td>{{player.firstName}}</td>
+            <td>{{player.lastName}}</td>
+            <td>{{player.games}}</td>
+            <td>{{round(player.minutes/player.games)}}</td>
+            <td>{{round(player.fg/player.games)}}</td>
+            <td>{{round(player.fga/player.games)}}</td>
+            <td>{{player.fgp+'%'}}</td>
+            <td>{{round(player.tpt/player.games)}}</td>
+            <td>{{round(player.tpta/player.games)}}</td>
+            <td>{{player.tptp+'%'}}</td>
+            <td>{{round(player.ft/player.games)}}</td>
+            <td>{{round(player.fta/player.games)}}</td>
+            <td>{{player.ftp+'%'}}</td>
+            <td>{{round(player.plusminus/player.games)}}</td>
+            <td>{{round(player.oReb/player.games)}}</td>
+            <td>{{round(player.reb/player.games)}}</td>
+            <td>{{round(player.assists/player.games)}}</td>
+            <td>{{round(player.turnovers/player.games)}}</td>
+            <td>{{round(player.steals/player.games)}}</td>
+            <td>{{round(player.blocks/player.games)}}</td>
+            <td>{{round(player.fouls/player.games)}}</td>
+            <td>{{round(player.points/player.games)}}</td>
+        </tr>
+    </table>
+
+    <table ng-show="type==='min'">
+        <caption>Players per 48 minutes</caption>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Games</th>
+            <th>FG</th>
+            <th>FGA</th>
+            <th>FG%</th>
+            <th>3FG</th>
+            <th>3FGA</th>
+            <th>3FG%</th>
+            <th>FT</th>
+            <th>FTA</th>
+            <th>FT%</th>
+            <th>+-</th>
+            <th>OR</th>
+            <th>Reb</th>
+            <th>Ass</th>
+            <th>TO</th>
+            <th>Stl</th>
+            <th>Block</th>
+            <th>Foul</th>
+            <th>Points</th>
+        </tr>
+        <tr ng-repeat="player in players">
+            <td>{{player.firstName}}</td>
+            <td>{{player.lastName}}</td>
+            <td>{{player.games}}</td>
+            <td>{{round(player.fg/player.minutes*48)}}</td>
+            <td>{{round(player.fga/player.minutes*48)}}</td>
+            <td>{{player.fgp+'%'}}</td>
+            <td>{{round(player.tpt/player.minutes*48)}}</td>
+            <td>{{round(player.tpta/player.minutes*48)}}</td>
+            <td>{{player.tptp+'%'}}</td>
+            <td>{{round(player.ft/player.minutes*48)}}</td>
+            <td>{{round(player.fta/player.minutes*48)}}</td>
+            <td>{{player.ftp+'%'}}</td>
+            <td>{{round(player.plusminus/player.minutes*48)}}</td>
+            <td>{{round(player.oReb/player.minutes*48)}}</td>
+            <td>{{round(player.reb/player.minutes*48)}}</td>
+            <td>{{round(player.assists/player.minutes*48)}}</td>
+            <td>{{round(player.turnovers/player.minutes*48)}}</td>
+            <td>{{round(player.steals/player.minutes*48)}}</td>
+            <td>{{round(player.blocks/player.minutes*48)}}</td>
+            <td>{{round(player.fouls/player.minutes*48)}}</td>
+            <td>{{round(player.points/player.minutes*48)}}</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>Double-Doubles</td>
+            <td>{{doubleDouble}}</td>
+        </tr>
+        <tr>
+            <td>Triple-Doubles</td>
+            <td>{{triplDouble}}</td>
+        </tr>
+        <tr>
+            <td>Quadrouple-Doubles</td>
+            <td>{{quadroDouble}}</td>
+        </tr>
+        <tr>
+            <td>Pentaple-Doubles</td>
+            <td>{{pentaDouble}}</td>
+        </tr>
+        <tr>
+            <td>20+20</td>
+            <td>{{twenty}}</td>
+        </tr>
+    </table>
 </div>
