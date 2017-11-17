@@ -1052,7 +1052,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                 return $scope.round(player.points/player.games);
                 break;
             default:
-                return $scope.propertyName;
+                return player[$scope.propertyName];
                 break;
         }
     };
@@ -1105,7 +1105,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                 return $scope.round(player.points/player.minutes*48);
                 break;
             default:
-                return $scope.propertyName;
+                return player[$scope.propertyName];
                 break;
         }
     };
@@ -1120,7 +1120,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                 return date[2]+date[0]+date[1];
                 break;
             default:
-                return $scope.propertyName;
+                return game[$scope.propertyName];
                 break;
         }
     }
