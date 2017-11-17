@@ -107,7 +107,7 @@
         </tr>
         <tr ng-repeat="player in players | orderBy:propertyName:reverse">
             <td>{{player.firstName}}</td>
-            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/player.aspx">{{player.lastName}}</a></td>
+            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
             <td>{{player.games}}</td>
             <td>{{player.minutes}}</td>
             <td>{{player.fg}}</td>
@@ -160,7 +160,7 @@
         </tr>
         <tr ng-repeat="player in players | orderBy:perGameSort:reverse">
             <td>{{player.firstName}}</td>
-            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/player.aspx">{{player.lastName}}</a></td>
+            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
             <td>{{player.games}}</td>
             <td>{{round(player.minutes/player.games)}}</td>
             <td>{{round(player.fg/player.games)}}</td>
@@ -211,7 +211,7 @@
         </tr>
         <tr ng-repeat="player in players | orderBy:perSort:reverse">
             <td>{{player.firstName}}</td>
-            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/player.aspx">{{player.lastName}}</a></td>
+            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
             <td>{{player.games}}</td>
             <td>{{round(player.fg/player.minutes*48)}}</td>
             <td>{{round(player.fga/player.minutes*48)}}</td>

@@ -422,7 +422,8 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                 26503,
                 26506,
                 26507,
-                26512
+                26512,
+                26515
             ],
             scrimmages:[26025,
                 26852
