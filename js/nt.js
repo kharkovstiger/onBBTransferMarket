@@ -709,7 +709,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             $scope.gameIds.push(objectiIds[i].scrimmages[j]);
         }
     }
-    console.log($scope.gameIds);
 
     $scope.pentaDouble=0;
     $scope.quadroDouble=0;
@@ -739,7 +738,13 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     function getGame(id) {
         $http.get(myBaseURL2 + '/game?id='+id).then(
             function (response) {
-                var date = response.data.split(/<title>|<\/title>/g)[1].trim().split(' ')[6];
+                var dates = response.data.split(/<title>|<\/title>/g)[1].trim().split(' ');
+                for(var i=0;i<dates.length;i++){
+                    if (dates[i].includes('/')) {
+                        var date = dates[i];
+                        break;
+                    }
+                }
                 console.log(date);
                 var temp = '<table' + response.data.split(/<table|table>/g)[15] + 'table>';
                 var away = $.parseXML(temp.replace(new RegExp('&nbsp;', 'g'), 'x'));
@@ -977,21 +982,145 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             'blocks':parseInt(tds[10+q].textContent.trim())
         };
     }
-
-    $scope.comparator=function (a,b) {
-        console.log(a+'\n'+b);
-        switch ($scope.propertyName){
-            case 'result':
-                return (a.points-a.pointsAgainst<b.points-b.pointsAgainst)?-1:1;
-                break;
-            default:
-                return null;
-                break;
-        }
-    };
+    //
+    // $scope.comparator=function (a,b) {
+    //     console.log(a+'\n'+b);
+    //     switch ($scope.propertyName){
+    //         case 'result':
+    //             return (a.points-a.pointsAgainst<b.points-b.pointsAgainst)?-1:1;
+    //             break;
+    //         default:
+    //             return null;
+    //             break;
+    //     }
+    // };
 
     $scope.sortBy = function(propertyName) {
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : true;
         $scope.propertyName = propertyName;
     };
+
+    $scope.perGameSort=function (player) {
+        switch ($scope.propertyName){
+            case 'minutes':
+                return $scope.round(player.minutes/player.games);
+                break;
+            case 'fg':
+                return $scope.round(player.fg/player.games);
+                break;
+            case 'fga':
+                return $scope.round(player.fga/player.games);
+                break;
+            case 'tpt':
+                return $scope.round(player.tpt/player.games);
+                break;
+            case 'tpta':
+                return $scope.round(player.tpta/player.games);
+                break;
+            case 'ft':
+                return $scope.round(player.ft/player.games);
+                break;
+            case 'fta':
+                return $scope.round(player.fta/player.games);
+                break;
+            case 'plusminus':
+                return $scope.round(player.plusminus/player.games);
+                break;
+            case 'oReb':
+                return $scope.round(player.oReb/player.games);
+                break;
+            case 'reb':
+                return $scope.round(player.reb/player.games);
+                break;
+            case 'assists':
+                return $scope.round(player.assists/player.games);
+                break;
+            case 'turnovers':
+                return $scope.round(player.turnovers/player.games);
+                break;
+            case 'steals':
+                return $scope.round(player.steals/player.games);
+                break;
+            case 'blocks':
+                return $scope.round(player.blocks/player.games);
+                break;
+            case 'fouls':
+                return $scope.round(player.fouls/player.games);
+                break;
+            case 'points':
+                return $scope.round(player.points/player.games);
+                break;
+            default:
+                return $scope.propertyName;
+                break;
+        }
+    };
+
+    $scope.perSort=function (player) {
+        switch ($scope.propertyName){
+            case 'fg':
+                return $scope.round(player.fg/player.minutes*48);
+                break;
+            case 'fga':
+                return $scope.round(player.fga/player.minutes*48);
+                break;
+            case 'tpt':
+                return $scope.round(player.tpt/player.minutes*48);
+                break;
+            case 'tpta':
+                return $scope.round(player.tpta/player.minutes*48);
+                break;
+            case 'ft':
+                return $scope.round(player.ft/player.minutes*48);
+                break;
+            case 'fta':
+                return $scope.round(player.fta/player.minutes*48);
+                break;
+            case 'plusminus':
+                return $scope.round(player.plusminus/player.minutes*48);
+                break;
+            case 'oReb':
+                return $scope.round(player.oReb/player.minutes*48);
+                break;
+            case 'reb':
+                return $scope.round(player.reb/player.minutes*48);
+                break;
+            case 'assists':
+                return $scope.round(player.assists/player.minutes*48);
+                break;
+            case 'turnovers':
+                return $scope.round(player.turnovers/player.minutes*48);
+                break;
+            case 'steals':
+                return $scope.round(player.steals/player.minutes*48);
+                break;
+            case 'blocks':
+                return $scope.round(player.blocks/player.minutes*48);
+                break;
+            case 'fouls':
+                return $scope.round(player.fouls/player.minutes*48);
+                break;
+            case 'points':
+                return $scope.round(player.points/player.minutes*48);
+                break;
+            default:
+                return $scope.propertyName;
+                break;
+        }
+    };
+
+    $scope.gameSort=function (game) {
+        switch ($scope.propertyName){
+            case 'result':
+                return game.points-game.pointsAgainst;
+                break;
+            case 'date':
+                var date=game.date.split('/');
+                return date[2]+date[0]+date[1];
+                break;
+            default:
+                return $scope.propertyName;
+                break;
+        }
+    }
 }]);
