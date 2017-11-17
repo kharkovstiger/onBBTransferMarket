@@ -657,8 +657,8 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         },
         {
             season:40,
-            officials:[],
-            scrimmages:[]
+            officials:[43578, 43584, 43587, 43591, 43594, 43598],
+            scrimmages:[43840]
         }
     ];
     $scope.gameIds=[];
