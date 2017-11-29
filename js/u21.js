@@ -657,7 +657,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         },
         {
             season:40,
-            officials:[43578, 43584, 43587, 43591, 43594, 43598],
+            officials:[43578, 43584, 43587, 43591, 43594, 43598, 43601, 44328],
             scrimmages:[43840]
         }
     ];
