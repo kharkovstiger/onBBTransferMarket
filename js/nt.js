@@ -19,7 +19,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     //         }
     //     }
     // );
-    var objectiIds=[
+    $scope.objectIds=[
         {
             season:3,
             officials:[475,477,482,485,487],
@@ -702,12 +702,12 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         }
     ];
     $scope.gameIds=[];
-    for(var i=0;i<objectiIds.length;i++){
-        for(var j=0;j<objectiIds[i].officials.length;j++) {
-            $scope.gameIds.push(objectiIds[i].officials[j]);
+    for(var i=0;i<$scope.objectIds.length;i++){
+        for(var j=0;j<$scope.objectIds[i].officials.length;j++) {
+            $scope.gameIds.push($scope.objectIds[i].officials[j]);
         }
-        for(var j=0;j<objectiIds[i].scrimmages.length;j++) {
-            $scope.gameIds.push(objectiIds[i].scrimmages[j]);
+        for(var j=0;j<$scope.objectIds[i].scrimmages.length;j++) {
+            $scope.gameIds.push($scope.objectIds[i].scrimmages[j]);
         }
     }
 
@@ -721,6 +721,19 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
 
     $scope.getStats=function () {
         $scope.stats($scope.list.split(/[, \n]/));
+    };
+
+    $scope.seasonStats=function (season) {
+        var games=[];
+        for(var j=0;j<$scope.objectIds[season-3].officials.length;j++) {
+            games.push($scope.objectIds[season-3].officials[j]);
+        }
+        if (!$scope.official){
+            for(var j=0;j<$scope.objectIds[season-3].scrimmages.length;j++) {
+                games.push($scope.objectIds[season-3].officials[j]);
+            }
+        }
+        $scope.stats(games);
     };
 
     $scope.stats=function(list) {
