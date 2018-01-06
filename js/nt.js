@@ -698,7 +698,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         {
             season:40,
             officials:[43901, 43938, 44011, 44051, 44083, 44106, 44146, 44189, 44419, 44459, 44499],
-            scrimmages:[43862, 44580]
+            scrimmages:[43862, 44580, 44626]
         }
     ];
     $scope.gameIds=[];
