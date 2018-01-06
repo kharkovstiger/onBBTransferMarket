@@ -1,4 +1,4 @@
-app.controller('ntCtrl', ['$scope', '$http', 'credentials', 'timeout', function($scope, $http, credentials, $timeout) {
+app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
 
     var myBaseURL1='https://forbb.herokuapp.com/api/bbapi';
     var myBaseURL2='https://forbb.herokuapp.com/api/bb';
@@ -749,7 +749,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', 'timeout', function(
         }
     };
 
-    $timeout($http.get(myBaseURL2 + '/game?id='+44459), 1000*60*15);
+    setTimeout($http.get(myBaseURL2 + '/game?id='+44459), 1000*60*15);
 
     function getGame(id) {
         $http.get(myBaseURL2 + '/game?id='+id).then(
