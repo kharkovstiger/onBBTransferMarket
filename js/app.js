@@ -12,7 +12,7 @@ app.config(function($routeProvider) {
             templateUrl : "ukrteams.html"
         })
         .when("/nt", {
-            templateUrl : "newNT.html"
+            templateUrl : "nt.html"
         })
         .when("/u21", {
             templateUrl : "u21.html"

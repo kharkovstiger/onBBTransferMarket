@@ -87,7 +87,7 @@
     <button ng-init="type='total'" ng-click="type='total'">Total</button>
     <button ng-click="type='game'">Per Game</button>
     <button ng-click="type='min'">Per 48 min</button>
-    <table ng-show="type==='total'">
+    <table>
         <caption>Players</caption>
         <tr>
             <th ng-click="sortBy('firstName')">Name</th>
@@ -114,7 +114,7 @@
             <th ng-click="sortBy('points')">Points</th>
             <th ng-click="sortBy('doubleDouble')">DoubleDoubles</th>
         </tr>
-        <tr ng-repeat="player in players | orderBy:sort:reverse">
+        <tr ng-repeat="player in type=='total'?players:type=='game'?playersPerGame:playersPerMinutes | orderBy:sort:reverse">
             <td>{{player.firstName}}</td>
             <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
             <td>{{player.stats.games}}</td>
@@ -138,108 +138,6 @@
             <td>{{player.stats.fouls}}</td>
             <td>{{player.stats.points}}</td>
             <td>{{player.stats.doubleDouble}}</td>
-        </tr>
-    </table>
-
-    <table ng-show="type==='game'">
-        <caption>Players per game</caption>
-        <tr>
-            <th ng-click="sortBy('firstName')">Name</th>
-            <th ng-click="sortBy('lastName')">Surname</th>
-            <th ng-click="sortBy('games')">Games</th>
-            <th ng-click="sortBy('minutes')">Minutes</th>
-            <th ng-click="sortBy('fg')">FG</th>
-            <th ng-click="sortBy('fga')">FGA</th>
-            <th ng-click="sortBy('fgp')">FG%</th>
-            <th ng-click="sortBy('tpt')">3FG</th>
-            <th ng-click="sortBy('tpta')">3FGA</th>
-            <th ng-click="sortBy('tptp')">3FG%</th>
-            <th ng-click="sortBy('ft')">FT</th>
-            <th ng-click="sortBy('fta')">FTA</th>
-            <th ng-click="sortBy('ftp')">FT%</th>
-            <th ng-click="sortBy('plusminus')">+-</th>
-            <th ng-click="sortBy('oReb')">OR</th>
-            <th ng-click="sortBy('reb')">Reb</th>
-            <th ng-click="sortBy('assists')">Ass</th>
-            <th ng-click="sortBy('turnovers')">TO</th>
-            <th ng-click="sortBy('steals')">Stl</th>
-            <th ng-click="sortBy('blocks')">Block</th>
-            <th ng-click="sortBy('fouls')">Foul</th>
-            <th ng-click="sortBy('points')">Points</th>
-        </tr>
-        <tr ng-repeat="player in players | orderBy:perGameSort:reverse">
-            <td>{{player.firstName}}</td>
-            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
-            <td>{{player.games}}</td>
-            <td>{{round(player.minutes/player.games)}}</td>
-            <td>{{round(player.fg/player.games)}}</td>
-            <td>{{round(player.fga/player.games)}}</td>
-            <td>{{player.fgp+'%'}}</td>
-            <td>{{round(player.tpt/player.games)}}</td>
-            <td>{{round(player.tpta/player.games)}}</td>
-            <td>{{player.tptp+'%'}}</td>
-            <td>{{round(player.ft/player.games)}}</td>
-            <td>{{round(player.fta/player.games)}}</td>
-            <td>{{player.ftp+'%'}}</td>
-            <td>{{round(player.plusminus/player.games)}}</td>
-            <td>{{round(player.oReb/player.games)}}</td>
-            <td>{{round(player.reb/player.games)}}</td>
-            <td>{{round(player.assists/player.games)}}</td>
-            <td>{{round(player.turnovers/player.games)}}</td>
-            <td>{{round(player.steals/player.games)}}</td>
-            <td>{{round(player.blocks/player.games)}}</td>
-            <td>{{round(player.fouls/player.games)}}</td>
-            <td>{{round(player.points/player.games)}}</td>
-        </tr>
-    </table>
-
-    <table ng-show="type==='min'">
-        <caption>Players per 48 minutes</caption>
-        <tr>
-            <th ng-click="sortBy('firstName')">Name</th>
-            <th ng-click="sortBy('lastName')">Surname</th>
-            <th ng-click="sortBy('games')">Games</th>
-            <th ng-click="sortBy('fg')">FG</th>
-            <th ng-click="sortBy('fga')">FGA</th>
-            <th ng-click="sortBy('fgp')">FG%</th>
-            <th ng-click="sortBy('tpt')">3FG</th>
-            <th ng-click="sortBy('tpta')">3FGA</th>
-            <th ng-click="sortBy('tptp')">3FG%</th>
-            <th ng-click="sortBy('ft')">FT</th>
-            <th ng-click="sortBy('fta')">FTA</th>
-            <th ng-click="sortBy('ftp')">FT%</th>
-            <th ng-click="sortBy('plusminus')">+-</th>
-            <th ng-click="sortBy('oReb')">OR</th>
-            <th ng-click="sortBy('reb')">Reb</th>
-            <th ng-click="sortBy('assists')">Ass</th>
-            <th ng-click="sortBy('turnovers')">TO</th>
-            <th ng-click="sortBy('steals')">Stl</th>
-            <th ng-click="sortBy('blocks')">Block</th>
-            <th ng-click="sortBy('fouls')">Foul</th>
-            <th ng-click="sortBy('points')">Points</th>
-        </tr>
-        <tr ng-repeat="player in players | orderBy:perSort:reverse">
-            <td>{{player.firstName}}</td>
-            <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
-            <td>{{player.games}}</td>
-            <td>{{round(player.fg/player.minutes*48)}}</td>
-            <td>{{round(player.fga/player.minutes*48)}}</td>
-            <td>{{player.fgp+'%'}}</td>
-            <td>{{round(player.tpt/player.minutes*48)}}</td>
-            <td>{{round(player.tpta/player.minutes*48)}}</td>
-            <td>{{player.tptp+'%'}}</td>
-            <td>{{round(player.ft/player.minutes*48)}}</td>
-            <td>{{round(player.fta/player.minutes*48)}}</td>
-            <td>{{player.ftp+'%'}}</td>
-            <td>{{round(player.plusminus/player.minutes*48)}}</td>
-            <td>{{round(player.oReb/player.minutes*48)}}</td>
-            <td>{{round(player.reb/player.minutes*48)}}</td>
-            <td>{{round(player.assists/player.minutes*48)}}</td>
-            <td>{{round(player.turnovers/player.minutes*48)}}</td>
-            <td>{{round(player.steals/player.minutes*48)}}</td>
-            <td>{{round(player.blocks/player.minutes*48)}}</td>
-            <td>{{round(player.fouls/player.minutes*48)}}</td>
-            <td>{{round(player.points/player.minutes*48)}}</td>
         </tr>
     </table>
     <br>

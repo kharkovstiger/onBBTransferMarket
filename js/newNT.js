@@ -30,52 +30,35 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         $scope.games=[];
         $scope.players=[];
         if ('undefined' !== typeof $scope.list)
-            $http.post(myBaseURL+'/game/gamesForList',list).then(
-                function (response) {
-                    $scope.games=response.data;
-                    $scope.games.forEach(function (value) { 
-                        value.me=value.awayTeam.name==="Ukraina"?0:1;
-                    });
-                    $scope.request={
-                        'games': $scope.games,
-                        'country': 'Ukraina'
-                    };
-                    $http.post(myBaseURL+'/player/getPlayersStatForGameList', $scope.request).then(
-                        function (response) {
-                            $scope.players=response.data;
-                            $scope.players.forEach(function (value) { 
-                                value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);    
-                                value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);    
-                                value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);    
-                            });
-                        }
-                    );
-                }
-            );
+            fillStat('/game/gamesForList');
         else
-            $http.post(myBaseURL+'/game/allGamesForCountry/false', 'Ukraina').then(
-                function (response) {
-                    $scope.games=response.data;
-                    $scope.games.forEach(function (value) {
-                        value.me=value.awayTeam.name==="Ukraina"?0:1;
-                    });
-                    $scope.request={
-                        'games': $scope.games,
-                        'country': 'Ukraina'
-                    };
-                    $http.post(myBaseURL+'/player/getPlayersStatForGameList', $scope.request).then(
-                        function (response) {
-                            $scope.players=response.data;
-                            $scope.players.forEach(function (value) {
-                                value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
-                                value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
-                                value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
-                            });
-                        }
-                    );
-                }
-            );
+            fillStat('/game/allGamesForCountry/false');
     };
+
+    function fillStat(link) {
+        $http.post(myBaseURL+link, 'Ukraina').then(
+            function (response) {
+                $scope.games=response.data;
+                $scope.games.forEach(function (value) {
+                    value.me=value.awayTeam.name==="Ukraina"?0:1;
+                });
+                $scope.request={
+                    'games': $scope.games,
+                    'country': 'Ukraina'
+                };
+                $http.post(myBaseURL+'/player/getPlayersStatForGameList', $scope.request).then(
+                    function (response) {
+                        $scope.players=response.data;
+                        $scope.players.forEach(function (value) {
+                            value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
+                            value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
+                            value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
+                        });
+                    }
+                );
+            }
+        );
+    }
 
     $scope.round=function(n){
         return Math.round(n*100)/100;
