@@ -4,21 +4,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     var myBaseURL2='https://forbb.herokuapp.com/api/bb';
     var url='http://www.buzzerbeater.com';
     var data=credentials.get();
-
-    // $http.get(myBaseURL2+'/ntschedule?jun=false&season=40').then(
-    //     function (response) {
-    //         console.log(response.data);
-    //         var temp=response.data.split(/<table class="schedule" style='width:99%'>|table>/g);
-    //         console.log($.parseXML('<table>'+temp[15].replace(new RegExp('10px', 'g'), '"10px"')
-    //             .replace(new RegExp('colspan=2', 'g'), 'colspan="2"')+'table>'));
-    //         var tData=$.parseXML('<table>'+temp[15].replace(new RegExp('10px', 'g'), '"10px"')
-    //             .replace(new RegExp('colspan=2', 'g'), 'colspan="2"')+'table>');
-    //         var trs=tData.getElementsByTagName('tr');
-    //         for (var i=1;i<trs.length;i++){
-    //
-    //         }
-    //     }
-    // );
+    
     $scope.objectIds=[
         {
             season:3,
@@ -744,6 +730,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         $scope.twenty=0;
         $scope.games=[];
         $scope.players=[];
+        $http.post()
         for(var i=0;i<list.length;i++) {
             getGame(list[i]);
         }
@@ -998,18 +985,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             'blocks':parseInt(tds[10+q].textContent.trim())
         };
     }
-    //
-    // $scope.comparator=function (a,b) {
-    //     console.log(a+'\n'+b);
-    //     switch ($scope.propertyName){
-    //         case 'result':
-    //             return (a.points-a.pointsAgainst<b.points-b.pointsAgainst)?-1:1;
-    //             break;
-    //         default:
-    //             return null;
-    //             break;
-    //     }
-    // };
 
     $scope.sortBy = function(propertyName) {
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : true;
