@@ -730,13 +730,10 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         $scope.twenty=0;
         $scope.games=[];
         $scope.players=[];
-        $http.post()
         for(var i=0;i<list.length;i++) {
             getGame(list[i]);
         }
     };
-
-    setTimeout($http.get(myBaseURL2 + '/game?id='+44459), 1000*60*15);
 
     function getGame(id) {
         $http.get(myBaseURL2 + '/game?id='+id).then(
