@@ -1,4 +1,9 @@
 <div ng-controller="ntCtrl" ng-cloak>
+    <p>Select a country to follow
+        <select ng-model="country">
+            <option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
+        </select></p>
+
     <p>To get statistics over the list of games. Put list of game Ids into textarea.</p>
     <textarea ng-model="list"></textarea><button ng-click="stats()">Get</button>
 

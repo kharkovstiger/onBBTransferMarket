@@ -1,4 +1,4 @@
-app.controller('finalsCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
+app.controller('finalsCtrl', ['$scope', '$http', 'credentials', '$rootScope', function($scope, $http, credentials, $rootScope) {
 
     var myBaseURL1='https://forbb.herokuapp.com/api/bbapi';
     var myBaseURL2='https://forbb.herokuapp.com/api/bb';
@@ -7,11 +7,13 @@ app.controller('finalsCtrl', ['$scope', '$http', 'credentials', function($scope,
     var data=credentials.get();
     $scope.cups=[];
     $scope.leagues=[];
+    console.log($rootScope.countries);
+    $scope.country=data.country.code;
 
     $http.get(myBaseURL1+'/season?login='+data.login+'&code='+data.code).then(
         function (response) {
             for(var i=3;i<$.parseXML(response.data).getElementsByTagName('inProgress')[0].parentElement.getAttribute('id');i++){
-                $http.get(myBaseURL2+'/cup?season='+i).then(
+                $http.get(myBaseURL2+'/cup?season='+i+'&country='+$scope.country).then(
                     function (response) {
                         var season=response.data.split(/selected="selected" value="/g)[1].substring(0,3).split('"')[0];
                         var temp='<tr>'+

@@ -11,6 +11,8 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
     $scope.twenty=0;
     $scope.games=[];
     $scope.players=[];
+    $scope.countries=['Ukraina', 'Belarus', 'Rossiya'];
+    $scope.country=data.country.name;
 
     $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(
         function (response) {
@@ -40,7 +42,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         if ('undefined' !== typeof $scope.list && $scope.list!=='')
             fillStat('/game/gamesForList', $scope.list.split(/[, \n]/));
         else
-            fillStat('/game/allGamesForCountry/false', 'Ukraina U21');
+            fillStat('/game/allGamesForCountry/false', $scope.country+' U21');
     };
 
     function fillStat(link, data) {
@@ -48,12 +50,12 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
             function (response) {
                 $scope.games=response.data;
                 $scope.games.forEach(function (value) {
-                    value.me=value.awayTeam.name==="Ukraina U21"?0:1;
+                    value.me=value.awayTeam.name===$scope.country+' U21'?0:1;
                 });
                 console.log($scope.games);
                 var request={
                     'games': $scope.games,
-                    'country': 'Ukraina U21'
+                    'country': $scope.country+' U21'
                 };
                 fillPayers(request);
             }
@@ -122,16 +124,16 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         $scope.playersPerGame=[];
         $scope.playersPerMinutes=[];
         console.log($scope.official);
-        $http.post(myBaseURL+'/game/allGamesForCountryForSeason/'+$scope.official+'/'+season, 'Ukraina U21').then(
+        $http.post(myBaseURL+'/game/allGamesForCountryForSeason/'+$scope.official+'/'+season, $scope.country+' U21').then(
             function (response) {
                 $scope.games=response.data;
                 $scope.games.forEach(function (value) {
-                    value.me=value.awayTeam.name==="Ukraina U21"?0:1;
+                    value.me=value.awayTeam.name===$scope.country+' U21'?0:1;
                 });
                 console.log($scope.games);
                 var request={
                     'games': $scope.games,
-                    'country': 'Ukraina U21'
+                    'country': $scope.country+' U21'
                 };
                 fillPayers(request);
             }
@@ -149,7 +151,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
     $scope.getAverages=function () {
         var request={
             'games': $scope.games,
-            'country': 'Ukraina U21'
+            'country': $scope.country+' U21'
         };
         $http.post(myBaseURL+'/game/getAveragedStatistics', request).then(
             function (response) {
