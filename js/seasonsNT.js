@@ -27,6 +27,9 @@ app.controller('seasonsNTCtrl', ['$scope', '$http', 'credentials', function($sco
             Object.keys(data).forEach(function (stat) {
                 data[stat]=round(data[stat]);
             });
+            data.fieldGoalsPercentage=$scope.percent(data.fieldGoals,data.fieldGoalsAttempts);
+            data.threePointsPercentage=$scope.percent(data.threePoints,data.threePointsAttempts);
+            data.freeThrowsPercentage=$scope.percent(data.freeThrows,data.freeThrowsAttempts);
             $scope.seasons.push({
                 'season':i,
                 'stat': data
@@ -37,6 +40,10 @@ app.controller('seasonsNTCtrl', ['$scope', '$http', 'credentials', function($sco
     var round=function(n){
         return Math.round(n*100)/100;
     };
+    
+    $scope.percent=function(n,m){
+        return Math.round(n/m*1000)/10;
+    };
 
     $scope.sortBy = function(propertyName) {
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : true;
@@ -46,7 +53,7 @@ app.controller('seasonsNTCtrl', ['$scope', '$http', 'credentials', function($sco
     $scope.sort=function (season) {
         switch ($scope.propertyName) {
             case 'season':
-                return $scope.propertyName;
+                return season[$scope.propertyName];
             default:
                 return season.stat[$scope.propertyName];
         }

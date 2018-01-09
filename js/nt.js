@@ -197,7 +197,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         switch ($scope.propertyName) {
             case 'firstName':
             case 'lastName':
-                return $scope.propertyName;
+                return player[$scope.propertyName];
             default:
                 return player.stats[$scope.propertyName];
         }
@@ -212,7 +212,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             case 'date':
                 // var date=game.date.split('/');
                 // return date[2]+date[0]+date[1];
-                return $scope.propertyName;
+                return game[$scope.propertyName];
             default:
                 return team.stats[$scope.propertyName];
         }

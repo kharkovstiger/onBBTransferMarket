@@ -12,10 +12,13 @@
             <th ng-click="sortBy('winRate')">Win Rate</th>
             <th ng-click="sortBy('fieldGoals')">FG</th>
             <th ng-click="sortBy('fieldGoalsAttempts')">FGA</th>
+            <th ng-click="sortBy('fieldGoalsPercentage')">FG%</th>
             <th ng-click="sortBy('threePoints')">3FG</th>
             <th ng-click="sortBy('threePointsAttempts')">3FGA</th>
+            <th ng-click="sortBy('threePointsPercentage')">3FG%</th>
             <th ng-click="sortBy('freeThrows')">FT</th>
             <th ng-click="sortBy('freeThrowsAttempts')">FTA</th>
+            <th ng-click="sortBy('freeThrowsPercentage')">FT%</th>
             <th ng-click="sortBy('offensiveRebounds')">OR</th>
             <th ng-click="sortBy('rebounds')">Reb</th>
             <th ng-click="sortBy('assists')">Ass</th>
@@ -30,10 +33,13 @@
             <td>{{season.stat.winRate}}</td>
             <td>{{season.stat.fieldGoals}}</td>
             <td>{{season.stat.fieldGoalsAttempts}}</td>
+            <td>{{season.stat.fieldGoalsPercentage+'%'}}</td>
             <td>{{season.stat.threePoints}}</td>
             <td>{{season.stat.threePointsAttempts}}</td>
+            <td>{{season.stat.threePointsPercentage+'%'}}</td>
             <td>{{season.stat.freeThrows}}</td>
             <td>{{season.stat.freeThrowsAttempts}}</td>
+            <td>{{season.stat.freeThrowsPercentage+'%'}}</td>
             <td>{{season.stat.offensiveRebounds}}</td>
             <td>{{season.stat.rebounds}}</td>
             <td>{{season.stat.assists}}</td>
