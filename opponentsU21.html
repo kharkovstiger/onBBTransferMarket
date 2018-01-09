@@ -1,0 +1,33 @@
+<div ng-controller="opponentsU21Ctrl" ng-cloak>
+    <p>Select a country to follow
+        <select ng-model="country">
+            <option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
+        </select>
+        <button ng-click="get()">Get</button>
+    </p>
+
+    <table>
+        <tr>
+            <th ng-click="sortBy('name')">Opponent</th>
+            <th colspan="2">Summary</th>
+            <th colspan="2">World</th>
+            <th colspan="2">Continental</th>
+            <th colspan="2">CT</th>
+            <th colspan="2">Scrimmage</th>
+        </tr>
+        <tr ng-repeat="opponent in opponents | orderBy:sort:reverse">
+            <td>{{opponent.name}}</td>
+            <td>{{opponent.all[0]}}</td>
+            <td>{{opponent.all[1]}}</td>
+            <td ng-style="{'color':'red'}">{{opponent.world[0]}}</td>
+            <td ng-style="{'color':'red'}">{{opponent.world[1]}}</td>
+            <td ng-style="{'color':'blue'}">{{opponent.continental[0]}}</td>
+            <td ng-style="{'color':'blue'}">{{opponent.continental[1]}}</td>
+            <td ng-style="{'color':'grey'}">{{opponent.ct[0]}}</td>
+            <td ng-style="{'color':'grey'}">{{opponent.ct[1]}}</td>
+            <td>{{opponent.scrimmage[0]}}</td>
+            <td>{{opponent.scrimmage[1]}}</td>
+
+        </tr>
+    </table>
+</div>
