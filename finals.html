@@ -1,4 +1,9 @@
 <div ng-controller="finalsCtrl" ng-cloak>
+    <p>Select a country to follow
+        <select ng-model="country">
+            <option ng-repeat="country in countries" value="{{country}}">{{country.name}}</option>
+        </select><button ng-click="get()">Get</button></p>
+    
     <table>
         <caption>Cup History</caption>
         <tr>

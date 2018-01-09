@@ -1,4 +1,4 @@
-app.controller('finalsCtrl', ['$scope', '$http', 'credentials', '$rootScope', function($scope, $http, credentials, $rootScope) {
+app.controller('finalsCtrl', ['$scope', '$http', 'credentials', function($scope, $http, credentials) {
 
     var myBaseURL1='https://forbb.herokuapp.com/api/bbapi';
     var myBaseURL2='https://forbb.herokuapp.com/api/bb';
@@ -7,68 +7,100 @@ app.controller('finalsCtrl', ['$scope', '$http', 'credentials', '$rootScope', fu
     var data=credentials.get();
     $scope.cups=[];
     $scope.leagues=[];
-    console.log($rootScope.countries);
-    $scope.country=data.country.code;
+    $scope.countries=[];
+    $scope.country=data.country;
 
-    $http.get(myBaseURL1+'/season?login='+data.login+'&code='+data.code).then(
+    $http.get(myBaseURL1+'/country?login='+data.login+'&code='+data.code).then(
         function (response) {
-            for(var i=3;i<$.parseXML(response.data).getElementsByTagName('inProgress')[0].parentElement.getAttribute('id');i++){
-                $http.get(myBaseURL2+'/cup?season='+i+'&country='+$scope.country).then(
-                    function (response) {
-                        var season=response.data.split(/selected="selected" value="/g)[1].substring(0,3).split('"')[0];
-                        var temp='<tr>'+
-                            response.data.split(/Championship|Semifinals/g)[1].split(/<table>|<\/table>/g)[1].split(/<tr>|<\/tr>/g)[2]+
-                            '</tr>';
-                        var tds=$.parseXML(temp).getElementsByTagName('td');
-                        var a=$.parseXML(temp).getElementsByTagName('a');
-                        $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+a[1].getAttribute('href').split('/')[2]).then(
-                            function (response) {
-                                var nOT=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
-                                if(parseInt(a[1].textContent.split('-')[0].trim())>parseInt(a[1].textContent.split('-')[1].trim())){
-                                    $scope.cups.push(cupConstructor(tds,a,0,season,nOT));
-                                }
-                                else{
-                                    $scope.cups.push(cupConstructor(tds,a,1,season,nOT));
-                                }
-                            }
-                        );
+            var xml=$.parseXML(response.data).getElementsByTagName('country');
+            for(var i=0;i<xml.length;i++){
+                $scope.countries.push({
+                    name:xml[i].textContent,
+                    code:xml[i].getAttribute('id'),
+                    season:xml[i].getAttribute('firstSeason')
+                });
+                if (xml[i].textContent===data.country.name){
+                    $scope.country.season=xml[i].getAttribute('firstSeason');
+                }
+            }
+        }
+    );
+    
+    $scope.get=function () {
+        reload();    
+    };
+
+    function reload() {
+        $scope.cups=[];
+        $scope.leagues=[];
+        $http.get(myBaseURL1+'/season?login='+data.login+'&code='+data.code).then(
+            function (response) {
+                var country=JSON.parse($scope.country);
+                $http.get(myBaseURL1+'/league?level=1&login='+data.login+'&code='+data.code+'&country='+country.code).then(
+                    function (value) {
+                        return $.parseXML(value.data).getElementsByTagName('league')[0].getAttribute('id')
                     }
-                );
-                $http.get(myBaseURL1+'/standings?leagueid=1366&season='+i+'&login='+data.login+'&code='+data.code).then(
-                    function (response) {
-                        var temp=$.parseXML(response.data);
-                        var season=temp.getElementsByTagName('standings')[0].getAttribute('season');
-                        var winner=temp.getElementsByTagName('winner')[0].textContent;
-                        var games=temp.getElementsByTagName('finals')[0].getElementsByTagName('match');
-                        var ha=games[0].getElementsByTagName('teamName')[1].textContent===winner?1:0;
-                        var nOT=[];
-                        $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+games[0].getAttribute('id')).then(
+                ).then(function (leagueId) {
+                    for(var i=country.season;i<$.parseXML(response.data).getElementsByTagName('inProgress')[0].parentElement.getAttribute('id');i++){
+                        $http.get(myBaseURL2+'/cup?season='+i+'&country='+country.code).then(
                             function (response) {
-                                nOT[0]=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
-                                $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+games[1].getAttribute('id')).then(
+                                var season=response.data.split(/selected="selected" value="/g)[1].substring(0,3).split('"')[0];
+                                var temp='<tr>'+
+                                    response.data.split(/Championship|Semifinals/g)[1].split(/<table>|<\/table>/g)[1].split(/<tr>|<\/tr>/g)[2]+
+                                    '</tr>';
+                                var tds=$.parseXML(temp).getElementsByTagName('td');
+                                var a=$.parseXML(temp).getElementsByTagName('a');
+                                $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+a[1].getAttribute('href').split('/')[2]).then(
                                     function (response) {
-                                        nOT[1]=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
-                                        if(games.length===3) {
-                                            $http.get(myBaseURL1 + '/boxscore?login=' + data.login + '&code=' + data.code + '&id=' + games[2].getAttribute('id')).then(
-                                                function (response) {
-                                                    nOT[2] = $.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length - 4;
-                                                    $scope.leagues.push(leagueConstructor(season, games, winner, ha, nOT));
-                                                }
-                                            );
+                                        var nOT=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
+                                        if(parseInt(a[1].textContent.split('-')[0].trim())>parseInt(a[1].textContent.split('-')[1].trim())){
+                                            $scope.cups.push(cupConstructor(tds,a,0,season,nOT));
                                         }
                                         else{
-                                            nOT[2]=0;
-                                            $scope.leagues.push(leagueConstructor(season, games, winner, ha, nOT));
+                                            $scope.cups.push(cupConstructor(tds,a,1,season,nOT));
                                         }
                                     }
                                 );
                             }
                         );
-                    }
-                );
+                        $http.get(myBaseURL1+'/standings?leagueid='+leagueId+'&season='+i+'&login='+data.login+'&code='+data.code).then(
+                            function (response) {
+                                var temp=$.parseXML(response.data);
+                                var season=temp.getElementsByTagName('standings')[0].getAttribute('season');
+                                var winner=temp.getElementsByTagName('winner')[0].textContent;
+                                var games=temp.getElementsByTagName('finals')[0].getElementsByTagName('match');
+                                var ha=games[0].getElementsByTagName('teamName')[1].textContent===winner?1:0;
+                                var nOT=[];
+                                $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+games[0].getAttribute('id')).then(
+                                    function (response) {
+                                        nOT[0]=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
+                                        $http.get(myBaseURL1+'/boxscore?login='+data.login+'&code='+data.code+'&id='+games[1].getAttribute('id')).then(
+                                            function (response) {
+                                                nOT[1]=$.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length-4;
+                                                if(games.length===3) {
+                                                    $http.get(myBaseURL1 + '/boxscore?login=' + data.login + '&code=' + data.code + '&id=' + games[2].getAttribute('id')).then(
+                                                        function (response) {
+                                                            nOT[2] = $.parseXML(response.data).getElementsByTagName('score')[0].getAttribute('partials').split(',').length - 4;
+                                                            $scope.leagues.push(leagueConstructor(season, games, winner, ha, nOT));
+                                                        }
+                                                    );
+                                                }
+                                                else{
+                                                    nOT[2]=0;
+                                                    $scope.leagues.push(leagueConstructor(season, games, winner, ha, nOT));
+                                                }
+                                            }
+                                        );
+                                    }
+                                );
+                            }
+                        );
+                    } 
+                });
             }
-        }
-    );
+        );
+    }
+    
 
     function cupConstructor(td,a,n,season,nOT) {
         return{

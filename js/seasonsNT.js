@@ -3,19 +3,20 @@ app.controller('seasonsNTCtrl', ['$scope', '$http', 'credentials', function($sco
     var myBaseURL='https://forbb.herokuapp.com/api';
     var url='http://www.buzzerbeater.com';
     var data=credentials.get();
-    $scope.countries=['Ukraina', 'Belarus', 'Rossiya'];
     $scope.country=data.country.name;
 
-    $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(
-        function (response) {
-            var doc=$.parseXML(response.data);
-            $scope.seasonNow=doc.getElementsByTagName('inProgress')[0].parentElement.getAttribute('id');
-            $scope.seasons=[];
-            for (var i=3;i<=$scope.seasonNow;i++){
-                request(i);
+    $scope.get=function () {
+        $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(
+            function (response) {
+                var doc=$.parseXML(response.data);
+                $scope.seasonNow=doc.getElementsByTagName('inProgress')[0].parentElement.getAttribute('id');
+                $scope.seasons=[];
+                for (var i=3;i<=$scope.seasonNow;i++){
+                    request(i);
+                }
             }
-        }
-    );
+        );    
+    };
 
     function request(i) {
         $http.post(myBaseURL+'/game/getSeasonsStatisticsForCountry/'+i, $scope.country).then(

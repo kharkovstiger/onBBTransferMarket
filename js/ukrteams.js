@@ -6,15 +6,34 @@ app.controller('teamsCtrl', ['$scope', '$http', 'credentials', function($scope, 
     var data=credentials.get();
     $scope.cups=[];
     var levels=0;
+    $scope.countries=[];
+    $scope.country=data.country;
+
+    $http.get(myBaseURL+'/country?login='+data.login+'&code='+data.code).then(
+        function (response) {
+            var xml=$.parseXML(response.data).getElementsByTagName('country');
+            for(var i=0;i<xml.length;i++){
+                $scope.countries.push({
+                    name:xml[i].textContent,
+                    code:xml[i].getAttribute('id'),
+                    season:xml[i].getAttribute('firstSeason')
+                });
+                if (xml[i].textContent===data.country.name){
+                    $scope.country.season=xml[i].getAttribute('firstSeason');
+                }
+            }
+        }
+    );
 
     $scope.reload=function () {
         $scope.isDisable=true;
         $scope.cups=[];
+        var country=JSON.parse($scope.country);
         $http.get(myBaseURL+'/country?login='+data.login+'&code='+data.code).then(
             function (response) {
-                levels=$.parseXML(response.data).getElementById('33').getAttribute('divisions');
+                levels=$.parseXML(response.data).getElementById(country.code).getAttribute('divisions');
                 for (var i=1;i<=levels;i++){
-                    $http.get(myBaseURL+'/league?login='+data.login+'&code='+data.code+'&level='+i).then(
+                    $http.get(myBaseURL+'/league?login='+data.login+'&code='+data.code+'&level='+i+'&country='+country.code).then(
                         function (response) {
                             var leagues=$.parseXML(response.data).getElementsByTagName('league');
                             for(var j=0;j<leagues.length;j++){

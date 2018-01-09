@@ -6,37 +6,54 @@ app.controller('ukrCtrl', ['$scope', '$http', 'credentials', function($scope, $h
 
     var data=credentials.get();
     $scope.cups=[];
+    $scope.countries=[];
+    $scope.country=data.country;
 
-    $http.get(myBaseURL2+'/country').then(
+    $http.get(myBaseURL1+'/country?login='+data.login+'&code='+data.code).then(
         function (response) {
-            // console.log(response);
-            var temp=response.data.split(/<table border="0" cellpadding="1" cellspacing="1" width="100%">|<\/table>/g);
-            var leagueChamps;
-            var cupChamps;
-            for(var i=1;i<temp.length-1;i++){
-                temp[i]='<table>'+temp[i]+'</table>';
-                if(temp[i].includes('ctl00_cphContent_rptLeagueChamps')) {
-                    leagueChamps=$.parseXML(temp[i]).getElementsByTagName('tr');
+            var xml=$.parseXML(response.data).getElementsByTagName('country');
+            for(var i=0;i<xml.length;i++){
+                $scope.countries.push({
+                    name:xml[i].textContent,
+                    code:xml[i].getAttribute('id'),
+                    season:xml[i].getAttribute('firstSeason')
+                });
+                if (xml[i].textContent===data.country.name){
+                    $scope.country.season=xml[i].getAttribute('firstSeason');
                 }
-                if(temp[i].includes('ctl00_cphContent_rptCupChamps')) {
-                    cupChamps=$.parseXML(temp[i]).getElementsByTagName('tr');
-                }
-            };
-            for(var i=1;i<leagueChamps.length;i++){
-                teamConstructor(leagueChamps[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0],1);
-                teamConstructor(leagueChamps[i].getElementsByTagName('td')[2].getElementsByTagName('a')[0],2);
             }
-            for(var i=1;i<cupChamps.length;i++){
-                teamConstructor(cupChamps[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0],3);
-                teamConstructor(cupChamps[i].getElementsByTagName('td')[2].getElementsByTagName('a')[0],4);
-            }
-            $scope.sort('titles');
-            //*************************Working with DOM
-            // var doc=$('<output>').append($.parseHTML(response.data));
-            // var appContainer = $('#ctl00_cphContent_rptCupChamps_ctl01_rankingTR', doc);
-            // console.log(appContainer);
         }
     );
+
+    $scope.reload=function () {
+        $scope.cups=[];
+        var country=JSON.parse($scope.country);
+        $http.get(myBaseURL2+'/country/'+country.code).then(
+            function (response) {
+                var temp=response.data.split(/<table border="0" cellpadding="1" cellspacing="1" width="100%">|<\/table>/g);
+                var leagueChamps;
+                var cupChamps;
+                for(var i=1;i<temp.length-1;i++){
+                    temp[i]='<table>'+temp[i]+'</table>';
+                    if(temp[i].includes('ctl00_cphContent_rptLeagueChamps')) {
+                        leagueChamps=$.parseXML(temp[i]).getElementsByTagName('tr');
+                    }
+                    if(temp[i].includes('ctl00_cphContent_rptCupChamps')) {
+                        cupChamps=$.parseXML(temp[i]).getElementsByTagName('tr');
+                    }
+                };
+                for(var i=1;i<leagueChamps.length;i++){
+                    teamConstructor(leagueChamps[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0],1);
+                    teamConstructor(leagueChamps[i].getElementsByTagName('td')[2].getElementsByTagName('a')[0],2);
+                }
+                for(var i=1;i<cupChamps.length;i++){
+                    teamConstructor(cupChamps[i].getElementsByTagName('td')[1].getElementsByTagName('a')[0],3);
+                    teamConstructor(cupChamps[i].getElementsByTagName('td')[2].getElementsByTagName('a')[0],4);
+                }
+                $scope.sort('titles');
+            }
+        );    
+    };
 
     function teamConstructor(obj,n) {
         for(var i=0; i<$scope.cups.length; i++){

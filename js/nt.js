@@ -11,7 +11,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     $scope.twenty=0;
     $scope.games=[];
     $scope.players=[];
-    $scope.countries=['Ukraina', 'Belarus', 'Rossiya'];
     $scope.country=data.country.name;
 
     $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(

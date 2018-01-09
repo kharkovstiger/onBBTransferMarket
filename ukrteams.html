@@ -1,5 +1,9 @@
 <div ng-controller="teamsCtrl" ng-cloak>
-    <button ng-click="reload()" ng-disabled="isDisable">Reload Data</button>
+
+    <p>Select a country to follow
+        <select ng-model="country">
+            <option ng-repeat="country in countries" value="{{country}}">{{country.name}}</option>
+        </select><button ng-click="reload()">Get</button></p>
 
     <table>
         <tr>

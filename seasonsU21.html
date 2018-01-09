@@ -2,7 +2,8 @@
     <p>Select a country to follow
         <select ng-model="country">
             <option ng-repeat="country in countries" value="{{country}}">{{country}}</option>
-        </select></p>
+        </select>
+        <button ng-click="get()">Get</button></p>
 
     <table>
         <tr>
