@@ -17,11 +17,17 @@ app.config(function($routeProvider) {
         .when("/seasonsNT", {
             templateUrl : "seasonsNT.html"
         })
+        .when("/opponentsNT", {
+            templateUrl : "opponentsNT.html"
+        })
         .when("/u21", {
             templateUrl : "u21.html"
         })
         .when("/seasonsU21", {
             templateUrl : "seasonsU21.html"
+        })
+        .when("/opponentsU21", {
+            templateUrl : "opponentsU21.html"
         })
         .when("/titles", {
             templateUrl : "titles.html"

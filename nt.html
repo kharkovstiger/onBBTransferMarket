@@ -16,6 +16,14 @@
         </select>
         <input type="checkbox" ng-model="official">
         <button ng-click="seasonStats(season)">Get</button></p>
+    
+    <p>Get statistics against the opponent. If you want only official games - mark a checkbox.
+        <select ng-model="opponent">
+            <option ng-repeat="country in allCountries" value="{{country}}">{{country}}</option>
+        </select>
+        <input type="checkbox" ng-model="official">
+        <button ng-click="stats('opponent')">Get</button>
+    </p>
 
     <button ng-click="getAverages()">Get Averages</button>
     <!--<button ng-click="getNames()">Get Names</button>-->

@@ -13,6 +13,17 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
     $scope.players=[];
     $scope.country=data.country.name;
 
+    $scope.allCountries=[];
+
+    $http.get(myBaseURL+'/bbapi/country?login='+data.login+'&code='+data.code).then(
+        function (response) {
+            var xml=$.parseXML(response.data).getElementsByTagName('country');
+            for(var i=0;i<xml.length;i++){
+                $scope.allCountries.push(xml[i].textContent);
+            }
+        }
+    );
+
     $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(
         function (response) {
             var doc=$.parseXML(response.data);
@@ -28,7 +39,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         return arr;
     };
 
-    $scope.stats=function() {
+    $scope.stats=function(string) {
         $scope.pentaDouble=0;
         $scope.quadroDouble=0;
         $scope.triplDouble=0;
@@ -38,27 +49,39 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         $scope.players=[];
         $scope.playersPerGame=[];
         $scope.playersPerMinutes=[];
-        if ('undefined' !== typeof $scope.list && $scope.list!=='')
-            fillStat('/game/gamesForList', $scope.list.split(/[, \n]/));
-        else
-            fillStat('/game/allGamesForCountry/false', $scope.country+' U21');
+        if (string=='opponent')
+            $http.post(myBaseURL+'/game/allGamesForCountryAgainstCountry/'+$scope.official, [$scope.country+' U21', $scope.opponent+' U21']).then(
+                function (response) {
+                    fillStat(response);
+                }
+            );
+        else {
+            if ('undefined' !== typeof $scope.list && $scope.list!=='')
+                $http.post(myBaseURL+'/game/gamesForList', $scope.list.split(/[, \n]/)).then(
+                    function (response) {
+                        fillStat(response);
+                    }
+                );
+            else
+                $http.post(myBaseURL+'/game/allGamesForCountry/false', $scope.country+' U21').then(
+                    function (response) {
+                        fillStat(response);
+                    }
+                );
+        }
     };
 
-    function fillStat(link, data) {
-        $http.post(myBaseURL+link, data).then(
-            function (response) {
-                $scope.games=response.data;
-                $scope.games.forEach(function (value) {
-                    value.me=value.awayTeam.name===$scope.country+' U21'?0:1;
-                });
-                console.log($scope.games);
-                var request={
-                    'games': $scope.games,
-                    'country': $scope.country+' U21'
-                };
-                fillPayers(request);
-            }
-        );
+    function fillStat(response) {
+        $scope.games = response.data;
+        $scope.games.forEach(function (value) {
+            value.me = value.awayTeam.name === $scope.country+' U21' ? 0 : 1;
+        });
+        console.log($scope.games);
+        var request = {
+            'games': $scope.games,
+            'country': $scope.country+' U21'
+        };
+        fillPayers(request);
     }
 
     function fillPayers(request) {
@@ -72,15 +95,19 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
             function (response) {
                 $scope.players=response.data;
                 $scope.players.forEach(function (value) {
-                    value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
-                    value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
-                    value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
+                    addPercentages(value);
                 });
                 console.log("ready");
             }
         );
     }
 
+    function addPercentages(value) {
+        value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
+        value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
+        value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
+    }
+    
     function getPlayersPerGame(request) {
         $http.post(myBaseURL+'/player/getPlayersStatForGameListPerGame', request).then(
             function (response) {
@@ -90,9 +117,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
                     Object.keys(value.stats).forEach(function (stat) {
                         value.stats[stat]=$scope.round(value.stats[stat]);
                     });
-                    value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
-                    value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
-                    value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
+                    addPercentages(value);
                 });
                 console.log("ready games");
             }
@@ -108,9 +133,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
                     Object.keys(value.stats).forEach(function (stat) {
                         value.stats[stat]=$scope.round(value.stats[stat]);
                     });
-                    value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
-                    value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
-                    value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
+                    addPercentages(value);
                 });
                 console.log("ready min");
             }

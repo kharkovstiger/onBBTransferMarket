@@ -13,6 +13,17 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     $scope.players=[];
     $scope.country=data.country.name;
 
+    $scope.allCountries=[];
+
+    $http.get(myBaseURL+'/bbapi/country?login='+data.login+'&code='+data.code).then(
+        function (response) {
+            var xml=$.parseXML(response.data).getElementsByTagName('country');
+            for(var i=0;i<xml.length;i++){
+                $scope.allCountries.push(xml[i].textContent);
+            }
+        }
+    );
+
     $http.get(myBaseURL+'/bbapi/season?login='+data.login+'&code='+data.code).then(
         function (response) {
             var doc=$.parseXML(response.data);
@@ -27,8 +38,8 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         }   
         return arr;
     };
-
-    $scope.stats=function() {
+    
+    $scope.stats=function(string) {
         $scope.pentaDouble=0;
         $scope.quadroDouble=0;
         $scope.triplDouble=0;
@@ -38,27 +49,39 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         $scope.players=[];
         $scope.playersPerGame=[];
         $scope.playersPerMinutes=[];
-        if ('undefined' !== typeof $scope.list && $scope.list!=='')
-            fillStat('/game/gamesForList', $scope.list.split(/[, \n]/));
-        else
-            fillStat('/game/allGamesForCountry/false', $scope.country);
+        if (string=='opponent')
+            $http.post(myBaseURL+'/game/allGamesForCountryAgainstCountry/'+$scope.official, [$scope.country, $scope.opponent]).then(
+                function (response) {
+                    fillStat(response);
+                }
+            );
+        else {
+            if ('undefined' !== typeof $scope.list && $scope.list!=='')
+                $http.post(myBaseURL+'/game/gamesForList', $scope.list.split(/[, \n]/)).then(
+                    function (response) {
+                        fillStat(response);
+                    }
+                );
+            else
+                $http.post(myBaseURL+'/game/allGamesForCountry/false', $scope.country).then(
+                    function (response) {
+                        fillStat(response);
+                    }
+                );
+        }
     };
 
-    function fillStat(link, data) {
-        $http.post(myBaseURL+link, data).then(
-            function (response) {
-                $scope.games=response.data;
-                $scope.games.forEach(function (value) {
-                    value.me=value.awayTeam.name===$scope.country?0:1;
-                });
-                console.log($scope.games);
-                var request={
-                    'games': $scope.games,
-                    'country': $scope.country
-                };
-                fillPayers(request);
-            }
-        );
+    function fillStat(response) {
+        $scope.games=response.data;
+        $scope.games.forEach(function (value) {
+            value.me=value.awayTeam.name===$scope.country?0:1;
+        });
+        console.log($scope.games);
+        var request={
+            'games': $scope.games,
+            'country': $scope.country
+        };
+        fillPayers(request);
     }
     
     function fillPayers(request) {
