@@ -210,8 +210,6 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             case 'result':
                 return team.stats.points-opp.stats.points;
             case 'date':
-                // var date=game.date.split('/');
-                // return date[2]+date[0]+date[1];
                 return game[$scope.propertyName];
             default:
                 return team.stats[$scope.propertyName];
