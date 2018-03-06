@@ -93,10 +93,20 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
     function getPlayers(request) {
         $http.post(myBaseURL+'/player/getPlayersStatForGameList', request).then(
             function (response) {
-                $scope.players=response.data;
+                console.log(response.data);
+                $scope.players=response.data.players;
                 $scope.players.forEach(function (value) {
                     addPercentages(value);
                 });
+
+                $scope.doubleDouble=response.data.doubles.doubleDouble;
+                $scope.triplDouble=response.data.doubles.tripleDouble;
+                $scope.quadroDouble=response.data.doubles.quadroDouble;
+                $scope.pentaDouble=response.data.doubles.pentaDouble;
+                $scope.twenty=response.data.doubles.twenty;
+                $scope.records=response.data.records;
+
+                console.log($scope.records);
                 console.log("ready");
             }
         );
@@ -216,5 +226,12 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
             default:
                 return team.stats[$scope.propertyName];
         }
+    };
+
+    $scope.openModal=function (doubles) {
+        $scope.doubles=doubles;
+        $scope.modal=!$scope.modal;
+        console.log($scope.doubles);
+        console.log($scope.modal);
     }
 }]);

@@ -12,6 +12,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     $scope.games=[];
     $scope.players=[];
     $scope.country=data.country.name;
+    $scope.records={};
 
     $scope.allCountries=[];
 
@@ -93,12 +94,22 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     function getPlayers(request) {
         $http.post(myBaseURL+'/player/getPlayersStatForGameList', request).then(
             function (response) {
-                $scope.players=response.data;
+                console.log(response.data);
+                $scope.players=response.data.players;
                 $scope.players.forEach(function (value) {
                     value.stats.fieldGoalsPercentage=$scope.percent(value.stats.fieldGoals,value.stats.fieldGoalsAttempts);
                     value.stats.threePointsPercentage=$scope.percent(value.stats.threePoints,value.stats.threePointsAttempts);
                     value.stats.freeThrowsPercentage=$scope.percent(value.stats.freeThrows,value.stats.freeThrowsAttempts);
                 });
+
+                $scope.doubleDouble=response.data.doubles.doubleDouble;
+                $scope.triplDouble=response.data.doubles.tripleDouble;
+                $scope.quadroDouble=response.data.doubles.quadroDouble;
+                $scope.pentaDouble=response.data.doubles.pentaDouble;
+                $scope.twenty=response.data.doubles.twenty;
+                $scope.records=response.data.records;
+
+                console.log($scope.records);
                 console.log("ready");
             }
         );
@@ -214,5 +225,12 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
             default:
                 return team.stats[$scope.propertyName];
         }
+    };
+    
+    $scope.openModal=function (doubles) {
+        $scope.doubles=doubles;
+        $scope.modal=!$scope.modal;
+        console.log($scope.doubles);
+        console.log($scope.modal);
     }
 }]);

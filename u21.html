@@ -14,7 +14,7 @@
         <select ng-model="season">
             <option ng-repeat="obj in seasons()" value="{{obj}}">{{obj}}</option>
         </select>
-        <input type="checkbox" ng-model="official">
+        <input type="checkbox" ng-init="official=false" ng-model="official">
         <button ng-click="seasonStats(season)">Get</button></p>
 
     <p>Get statistics against the opponent. If you want only official games - mark a checkbox.
@@ -154,26 +154,97 @@
         </tr>
     </table>
     <br>
-    <table>
+    <table ng-init="modal=false">
         <tr>
             <td>Double-Doubles</td>
-            <td>{{doubleDouble}}</td>
+            <td>{{doubleDouble.length}}</td>
         </tr>
         <tr>
-            <td>Triple-Doubles</td>
-            <td>{{triplDouble}}</td>
+            <td ng-click="openModal(triplDouble)">Triple-Doubles</td>
+            <td>{{triplDouble.length}}</td>
         </tr>
         <tr>
-            <td>Quadrouple-Doubles</td>
-            <td>{{quadroDouble}}</td>
+            <td ng-click="openModal(quadroDouble)">Quadrouple-Doubles</td>
+            <td>{{quadroDouble.length}}</td>
         </tr>
         <tr>
-            <td>Pentaple-Doubles</td>
-            <td>{{pentaDouble}}</td>
+            <td ng-click="openModal(pentaDouble)">Pentaple-Doubles</td>
+            <td>{{pentaDouble.length}}</td>
         </tr>
         <tr>
-            <td>20+20</td>
-            <td>{{twenty}}</td>
+            <td ng-click="openModal(twenty)">20+20</td>
+            <td>{{twenty.length}}</td>
+        </tr>
+    </table>
+    <br>
+    <table ng-show="modal" id="modal">
+        <tr>
+            <th>Game</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Minutes</th>
+            <th>FG</th>
+            <th>FGA</th>
+            <th>3FG</th>
+            <th>3FGA</th>
+            <th>FT</th>
+            <th>FTA</th>
+            <th>+-</th>
+            <th>OR</th>
+            <th>Reb</th>
+            <th>Ass</th>
+            <th>TO</th>
+            <th>Stl</th>
+            <th>Block</th>
+            <th>Foul</th>
+            <th>Points</th>
+        </tr>
+        <tr ng-repeat="data in doubles">
+            <td><a href="http://www.buzzerbeater.com/match/{{data.game.id}}/boxscore.aspx">{{data.game.date+" "
+                +data.game.season+"season "+(data.game.homeTeam.name===country+"U21"?data.game.awayTeam.name:data.game.homeTeam.name)}}</a></td>
+            <td>{{data.player.firstName}}</td>
+            <td><a href="http://www.buzzerbeater.com/player/{{data.player.id}}/overview.aspx">{{data.player.lastName}}</a></td>
+            <td>{{data.player.stats.minutes}}</td>
+            <td>{{data.player.stats.fieldGoals}}</td>
+            <td>{{data.player.stats.fieldGoalsAttempts}}</td>
+            <td>{{data.player.stats.threePoints}}</td>
+            <td>{{data.player.stats.threePointsAttempts}}</td>
+            <td>{{data.player.stats.freeThrows}}</td>
+            <td>{{data.player.stats.freeThrowsAttempts}}</td>
+            <td>{{data.player.stats.plusMinus}}</td>
+            <td>{{data.player.stats.offensiveRebounds}}</td>
+            <td>{{data.player.stats.rebounds}}</td>
+            <td>{{data.player.stats.assists}}</td>
+            <td>{{data.player.stats.turnovers}}</td>
+            <td>{{data.player.stats.steals}}</td>
+            <td>{{data.player.stats.blocks}}</td>
+            <td>{{data.player.stats.fouls}}</td>
+            <td>{{data.player.stats.points}}</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <caption>Individual Records</caption>
+        <tr>
+            <th>Stat</th>
+            <th>Number</th>
+            <th>Player</th>
+            <th>Game</th>
+        </tr>
+        <tr ng-repeat="(key, value) in records">
+            <td>{{key}}</td>
+            <td>{{value[0].numbers}}</td>
+            <td>
+                <ul ng-repeat="v in value">
+                    <li><a href="http://www.buzzerbeater.com/player/{{v.player.id}}/overview.aspx">{{v.player.firstName+" "+v.player.lastName}}</a></li>
+                </ul>
+            </td>
+            <td>
+                <ul ng-repeat="v in value">
+                    <li><a href="http://www.buzzerbeater.com/match/{{v.game.id}}/boxscore.aspx">{{v.game.date+" "
+                        +v.game.season+"season "+(v.game.homeTeam.name===country+"U21"?v.game.awayTeam.name:v.game.homeTeam.name)}}</a></li>
+                </ul>
+            </td>
         </tr>
     </table>
 </div>
