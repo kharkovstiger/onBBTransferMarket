@@ -9,6 +9,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
     $scope.triplDouble=0;
     $scope.doubleDouble=0;
     $scope.twenty=0;
+    $scope.fifth=0;
     $scope.games=[];
     $scope.players=[];
     $scope.country=data.country.name;
@@ -46,10 +47,12 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
         $scope.triplDouble=0;
         $scope.doubleDouble=0;
         $scope.twenty=0;
+        $scope.fifth=0;
         $scope.games=[];
         $scope.players=[];
         $scope.playersPerGame=[];
         $scope.playersPerMinutes=[];
+        $scope.records={};
         if (string=='opponent')
             $http.post(myBaseURL+'/game/allGamesForCountryAgainstCountry/'+$scope.official, [$scope.country, $scope.opponent]).then(
                 function (response) {
@@ -108,7 +111,7 @@ app.controller('ntCtrl', ['$scope', '$http', 'credentials', function($scope, $ht
                 $scope.pentaDouble=response.data.doubles.pentaDouble;
                 $scope.twenty=response.data.doubles.twenty;
                 $scope.records=response.data.records;
-
+                $scope.fifth=response.data.doubles.fifth;
                 console.log($scope.records);
                 console.log("ready");
             }

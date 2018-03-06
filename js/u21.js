@@ -9,10 +9,11 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
     $scope.triplDouble=0;
     $scope.doubleDouble=0;
     $scope.twenty=0;
+    $scope.fifth=0;
     $scope.games=[];
     $scope.players=[];
     $scope.country=data.country.name;
-
+    $scope.records={};
     $scope.allCountries=[];
 
     $http.get(myBaseURL+'/bbapi/country?login='+data.login+'&code='+data.code).then(
@@ -45,10 +46,12 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         $scope.triplDouble=0;
         $scope.doubleDouble=0;
         $scope.twenty=0;
+        $scope.fifth=0;
         $scope.games=[];
         $scope.players=[];
         $scope.playersPerGame=[];
         $scope.playersPerMinutes=[];
+        $scope.records={};
         if (string=='opponent')
             $http.post(myBaseURL+'/game/allGamesForCountryAgainstCountry/'+$scope.official, [$scope.country+' U21', $scope.opponent+' U21']).then(
                 function (response) {
@@ -105,7 +108,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
                 $scope.pentaDouble=response.data.doubles.pentaDouble;
                 $scope.twenty=response.data.doubles.twenty;
                 $scope.records=response.data.records;
-
+                $scope.fifth=response.data.doubles.fifth;
                 console.log($scope.records);
                 console.log("ready");
             }
