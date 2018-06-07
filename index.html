@@ -41,6 +41,10 @@
             </nav>
         </div>
     </div>
+    <div ng-controller="mainCtrl" >
+        <button ng-disabled="updating" ng-click="updateGames()">Update games (It may take a long time)</button>
+        <div ng-init="updated=false" ng-if="updated">Games are updated</div>
+    </div>
     <div ng-view></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>

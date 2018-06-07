@@ -5,6 +5,7 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
     $scope.register = 'undefined' !== typeof data.login;
 
     var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
+    var myBaseURL2='https://forbb.herokuapp.com/api';
     $rootScope.countries=['Ukraina', 'Belarus', 'Rossiya'];
 
     $scope.log=function () {
@@ -32,4 +33,19 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
             }
         );
     };
+    
+    $scope.updateGames=function () {
+        $scope.updating=true;
+        $scope.updated=false;
+        $http.get(myBaseURL2+'/game/updateGames').then(
+            function (response) {
+                $scope.updating=false;
+                $scope.updated=true;
+            },
+            function (response) {
+                console.log(response.status+", "+response.data);
+                $scope.updating=false;
+            }
+        );
+    }
 }]);
