@@ -41,7 +41,7 @@
             </nav>
         </div>
     </div>
-    <div ng-controller="mainCtrl" >
+    <div ng-show="register" ng-controller="mainCtrl" >
         <button ng-disabled="updating" ng-click="updateGames()">Update games (It may take a long time)</button>
         <div ng-init="updated=false" ng-if="updated">Games are updated</div>
     </div>
