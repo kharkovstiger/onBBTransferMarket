@@ -85,6 +85,42 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
             'country': $scope.country+' U21'
         };
         fillPayers(request);
+        getTacticsStats(request);
+    }
+
+    function getTacticsStats(request) {
+        $http.post(myBaseURL+'/game/offTactics', request).then(
+            function (response) {
+                $scope.offensiveStats=response.data;
+                Object.keys($scope.offensiveStats).forEach(function (key) {
+                    Object.keys($scope.offensiveStats[key]).forEach(function (value) {
+                        $scope.offensiveStats[key][value] = $scope.round($scope.offensiveStats[key][value]);
+                    });
+                });
+                for (var key in $scope.offensiveStats) {
+                    $scope.offensiveStats[key].fieldGoalsPercentage=$scope.percent($scope.offensiveStats[key].fieldGoals,$scope.offensiveStats[key].fieldGoalsAttempts);
+                    $scope.offensiveStats[key].threePointsPercentage=$scope.percent($scope.offensiveStats[key].threePoints,$scope.offensiveStats[key].threePointsAttempts);
+                    $scope.offensiveStats[key].freeThrowsPercentage=$scope.percent($scope.offensiveStats[key].freeThrows,$scope.offensiveStats[key].freeThrowsAttempts);
+                }
+                console.log($scope.offensiveStats);
+            }
+        );
+        $http.post(myBaseURL+'/game/defTactics', request).then(
+            function (response) {
+                $scope.defensiveStats=response.data;
+                Object.keys($scope.defensiveStats).forEach(function (key) {
+                    Object.keys($scope.defensiveStats[key]).forEach(function (value) {
+                        $scope.defensiveStats[key][value] = $scope.round($scope.defensiveStats[key][value]);
+                    });
+                });
+                for (var key in $scope.defensiveStats) {
+                    $scope.defensiveStats[key].fieldGoalsPercentage=$scope.percent($scope.defensiveStats[key].fieldGoals,$scope.defensiveStats[key].fieldGoalsAttempts);
+                    $scope.defensiveStats[key].threePointsPercentage=$scope.percent($scope.defensiveStats[key].threePoints,$scope.defensiveStats[key].threePointsAttempts);
+                    $scope.defensiveStats[key].freeThrowsPercentage=$scope.percent($scope.defensiveStats[key].freeThrows,$scope.defensiveStats[key].freeThrowsAttempts);
+                }
+                console.log($scope.defensiveStats);
+            }
+        );
     }
 
     function fillPayers(request) {
@@ -171,6 +207,7 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
                     'country': $scope.country+' U21'
                 };
                 fillPayers(request);
+                getTacticsStats(request);
             }
         );
     };
