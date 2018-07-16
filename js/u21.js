@@ -273,5 +273,30 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
         $scope.modal=!$scope.modal;
         console.log($scope.doubles);
         console.log($scope.modal);
-    }
+    };
+
+
+    $scope.openPlayerModal=function(playerId){
+        var request={
+            'games': $scope.games,
+            'country': $scope.country+' U21'
+        };
+        $scope.playerModal=false;
+        $http.post(myBaseURL+'/player/offTactics/'+playerId, request).then(
+            function (response) {
+                $scope.playerOffensiveStats=response.data;
+                Object.keys($scope.playerOffensiveStats).forEach(function (key) {
+                    Object.keys($scope.playerOffensiveStats[key]).forEach(function (value) {
+                        $scope.playerOffensiveStats[key][value] = $scope.round($scope.playerOffensiveStats[key][value]);
+                    });
+                });
+                for (var key in $scope.playerOffensiveStats) {
+                    $scope.playerOffensiveStats[key].fieldGoalsPercentage=$scope.percent($scope.playerOffensiveStats[key].fieldGoals,$scope.playerOffensiveStats[key].fieldGoalsAttempts);
+                    $scope.playerOffensiveStats[key].threePointsPercentage=$scope.percent($scope.playerOffensiveStats[key].threePoints,$scope.playerOffensiveStats[key].threePointsAttempts);
+                    $scope.playerOffensiveStats[key].freeThrowsPercentage=$scope.percent($scope.playerOffensiveStats[key].freeThrows,$scope.playerOffensiveStats[key].freeThrowsAttempts);
+                }
+                $scope.playerModal=true;
+            }
+        );
+    };
 }]);

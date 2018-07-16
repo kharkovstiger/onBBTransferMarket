@@ -154,7 +154,7 @@
     <button ng-click="type='min'">Per 48 min</button>
     <table>
         <caption>Players stats{{type=='total'?'':type=='game'?' per game':' per 48 minutes'}}</caption>
-        <tr>
+        <tr ng-init="playerModal=false">
             <th ng-click="sortBy('firstName')">Name</th>
             <th ng-click="sortBy('lastName')">Surname</th>
             <th ng-click="sortBy('games')">Games</th>
@@ -180,7 +180,7 @@
             <th ng-click="sortBy('doubleDouble')">DoubleDoubles</th>
         </tr>
         <tr ng-repeat="player in type=='total'?players:type=='game'?playersPerGame:playersPerMinutes | orderBy:sort:reverse">
-            <td>{{player.firstName}}</td>
+            <td ng-click="openPlayerModal(player.id)">{{player.firstName}}</td>
             <td><a href="http://www.buzzerbeater.com/player/{{player.id}}/overview.aspx">{{player.lastName}}</a></td>
             <td>{{player.stats.games}}</td>
             <td>{{player.stats.minutes}}</td>
@@ -301,6 +301,53 @@
                         +v.game.season+"season "+(v.game.homeTeam.name===country+"U21"?v.game.awayTeam.name:v.game.homeTeam.name)}}</a></li>
                 </ul>
             </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table ng-show="playerModal" id="playerModal">
+        <caption> Game Stats for Player for Offensice Tactic</caption>
+        <tr>
+            <th ng-click="sortBy('tactic')">Tactic</th>
+            <th ng-click="sortBy('games')">Games</th>
+            <th ng-click="sortBy('fieldGoals')">FG</th>
+            <th ng-click="sortBy('fieldGoalsAttempts')">FGA</th>
+            <th ng-click="sortBy('fieldGoalsPercentage')">FG%</th>
+            <th ng-click="sortBy('threePoints')">3FG</th>
+            <th ng-click="sortBy('threePointsAttempts')">3FGA</th>
+            <th ng-click="sortBy('threePointsPercentage')">3FG%</th>
+            <th ng-click="sortBy('freeThrows')">FT</th>
+            <th ng-click="sortBy('freeThrowsAttempts')">FTA</th>
+            <th ng-click="sortBy('freeThrowsPercentage')">FT%</th>
+            <th ng-click="sortBy('offensiveRebounds')">OR</th>
+            <th ng-click="sortBy('rebounds')">Reb</th>
+            <th ng-click="sortBy('assists')">Ass</th>
+            <th ng-click="sortBy('turnovers')">TO</th>
+            <th ng-click="sortBy('steals')">Stl</th>
+            <th ng-click="sortBy('blocks')">Block</th>
+            <th ng-click="sortBy('fouls')">Foul</th>
+            <th ng-click="sortBy('points')">Points</th>
+        </tr>
+        <tr ng-repeat="(key, value) in playerOffensiveStats">
+            <td>{{key}}</td>
+            <td>{{value.games}}</td>
+            <td>{{value.fieldGoals}}</td>
+            <td>{{value.fieldGoalsAttempts}}</td>
+            <td>{{value.fieldGoalsPercentage+'%'}}</td>
+            <td>{{value.threePoints}}</td>
+            <td>{{value.threePointsAttempts}}</td>
+            <td>{{value.threePointsPercentage+'%'}}</td>
+            <td>{{value.freeThrows}}</td>
+            <td>{{value.freeThrowsAttempts}}</td>
+            <td>{{value.freeThrowsPercentage+'%'}}</td>
+            <td>{{value.offensiveRebounds}}</td>
+            <td>{{value.rebounds}}</td>
+            <td>{{value.assists}}</td>
+            <td>{{value.turnovers}}</td>
+            <td>{{value.steals}}</td>
+            <td>{{value.blocks}}</td>
+            <td>{{value.fouls}}</td>
+            <td>{{value.points}}</td>
         </tr>
     </table>
 </div>
