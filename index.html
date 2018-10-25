@@ -40,10 +40,11 @@
                 </ul>
             </nav>
         </div>
-    </div>
-    <div ng-show="register" ng-controller="mainCtrl" >
-        <button ng-disabled="updating" ng-click="updateGames()">Update games (It may take a long time)</button>
-        <div ng-init="updated=false" ng-if="updated">Games are updated</div>
+        <div ng-show="register">
+            <button ng-disabled="updating" ng-click="updateGames()">Update games</button>
+            <p>It may take a long time. Even when button become active it may still updating.</p>
+            <div ng-init="updated=false" ng-if="updated">Games are updated</div>
+        </div>
     </div>
     <div ng-view></div>
 

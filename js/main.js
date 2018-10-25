@@ -2,11 +2,22 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
 
     var data=credentials.get();
     $scope.isDisable=false;
+    $scope.updating=false;
     $scope.register = 'undefined' !== typeof data.login;
 
     var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
     var myBaseURL2='https://forbb.herokuapp.com/api';
     $rootScope.countries=['Ukraina', 'Belarus', 'Rossiya'];
+
+    function checkIfGamesUpdated() {
+        $http.get(myBaseURL2+'/isGamesUpdated').then(
+            function (value) { 
+                $scope.updated=value;
+            }
+        );
+    }
+
+    checkIfGamesUpdated();
 
     $scope.log=function () {
         $scope.isDisable=true;
