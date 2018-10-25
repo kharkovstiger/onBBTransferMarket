@@ -17,8 +17,6 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
         );
     }
 
-    checkIfGamesUpdated();
-
     $scope.log=function () {
         $scope.isDisable=true;
         $http.get(myBaseURL+'/login?login='+$scope.login+'&code='+$scope.code+'&quickinfo=1').then(
@@ -37,6 +35,7 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
                         }
                     });
                     $scope.register = true;
+                    checkIfGamesUpdated();
                 }
             },
             function (response) {
