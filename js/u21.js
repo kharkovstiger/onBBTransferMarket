@@ -277,11 +277,14 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
 
 
     $scope.openPlayerModal=function(playerId){
+        $scope.id=playerId;
         var request={
             'games': $scope.games,
             'country': $scope.country+' U21'
         };
         $scope.playerModal=false;
+        $scope.tactic=null;
+        $scope.position=null;
         $http.post(myBaseURL+'/player/offTactics/'+playerId, request).then(
             function (response) {
                 $scope.playerOffensiveStats=response.data;
@@ -296,6 +299,70 @@ app.controller('u21Ctrl', ['$scope', '$http', 'credentials', function($scope, $h
                     $scope.playerOffensiveStats[key].freeThrowsPercentage=$scope.percent($scope.playerOffensiveStats[key].freeThrows,$scope.playerOffensiveStats[key].freeThrowsAttempts);
                 }
                 $scope.playerModal=true;
+            }
+        );
+        $http.post(myBaseURL+'/player/position/'+playerId, request).then(
+            function (response) {
+                $scope.playerPositionStats=response.data;
+                Object.keys($scope.playerPositionStats).forEach(function (key) {
+                    Object.keys($scope.playerPositionStats[key]).forEach(function (value) {
+                        $scope.playerPositionStats[key][value] = $scope.round($scope.playerPositionStats[key][value]);
+                    });
+                });
+                for (var key in $scope.playerPositionStats) {
+                    $scope.playerPositionStats[key].fieldGoalsPercentage=$scope.percent($scope.playerPositionStats[key].fieldGoals,$scope.playerPositionStats[key].fieldGoalsAttempts);
+                    $scope.playerPositionStats[key].threePointsPercentage=$scope.percent($scope.playerPositionStats[key].threePoints,$scope.playerPositionStats[key].threePointsAttempts);
+                    $scope.playerPositionStats[key].freeThrowsPercentage=$scope.percent($scope.playerPositionStats[key].freeThrows,$scope.playerPositionStats[key].freeThrowsAttempts);
+                }
+                $scope.playerModal=true;
+            }
+        );
+    };
+
+    $scope.openPositionStats=function (tactic) {
+        var request={
+            'games': $scope.games,
+            'country': $scope.country+' U21'
+        };
+        $scope.tactic=tactic;
+        $http.post(myBaseURL+'/player/offTactics/position/'+$scope.id, request).then(
+            function (response) {
+                $scope.playerOffensivePositionStats=response.data[tactic];
+                console.log($scope.playerOffensivePositionStats);
+                Object.keys($scope.playerOffensivePositionStats).forEach(function (key) {
+                    Object.keys($scope.playerOffensivePositionStats[key]).forEach(function (value) {
+                        $scope.playerOffensivePositionStats[key][value] = $scope.round($scope.playerOffensivePositionStats[key][value]);
+                    });
+                });
+                for (var key in $scope.playerOffensivePositionStats) {
+                    $scope.playerOffensivePositionStats[key].fieldGoalsPercentage=$scope.percent($scope.playerOffensivePositionStats[key].fieldGoals,$scope.playerOffensivePositionStats[key].fieldGoalsAttempts);
+                    $scope.playerOffensivePositionStats[key].threePointsPercentage=$scope.percent($scope.playerOffensivePositionStats[key].threePoints,$scope.playerOffensivePositionStats[key].threePointsAttempts);
+                    $scope.playerOffensivePositionStats[key].freeThrowsPercentage=$scope.percent($scope.playerOffensivePositionStats[key].freeThrows,$scope.playerOffensivePositionStats[key].freeThrowsAttempts);
+                }
+            }
+        );
+    };
+
+    $scope.openOffensiveStats=function (position) {
+        var request={
+            'games': $scope.games,
+            'country': $scope.country+' U21'
+        };
+        $scope.position=position;
+        $http.post(myBaseURL+'/player/position/offTactics/'+$scope.id, request).then(
+            function (response) {
+                $scope.playerPositionOffensiveStats=response.data[position];
+                console.log($scope.playerPositionOffensiveStats);
+                Object.keys($scope.playerPositionOffensiveStats).forEach(function (key) {
+                    Object.keys($scope.playerPositionOffensiveStats[key]).forEach(function (value) {
+                        $scope.playerPositionOffensiveStats[key][value] = $scope.round($scope.playerPositionOffensiveStats[key][value]);
+                    });
+                });
+                for (var key in $scope.playerPositionOffensiveStats) {
+                    $scope.playerPositionOffensiveStats[key].fieldGoalsPercentage=$scope.percent($scope.playerPositionOffensiveStats[key].fieldGoals,$scope.playerPositionOffensiveStats[key].fieldGoalsAttempts);
+                    $scope.playerPositionOffensiveStats[key].threePointsPercentage=$scope.percent($scope.playerPositionOffensiveStats[key].threePoints,$scope.playerPositionOffensiveStats[key].threePointsAttempts);
+                    $scope.playerPositionOffensiveStats[key].freeThrowsPercentage=$scope.percent($scope.playerPositionOffensiveStats[key].freeThrows,$scope.playerPositionOffensiveStats[key].freeThrowsAttempts);
+                }
             }
         );
     };
