@@ -7,7 +7,7 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
 
     var myBaseURL='https://forbb.herokuapp.com/api/bbapi';
     var myBaseURL2='https://forbb.herokuapp.com/api';
-    $rootScope.countries=['Ukraina', 'Belarus', 'Rossiya'];
+    $rootScope.countries=['Ukraina', 'Belarus', 'Rossiya', 'Indonesia'];
 
     function checkIfGamesUpdated() {
         $http.get(myBaseURL2+'/isGamesUpdated').then(
