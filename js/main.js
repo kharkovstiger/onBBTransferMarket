@@ -10,7 +10,7 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
     $rootScope.countries=['Ukraina', 'Belarus', 'Rossiya', 'Indonesia'];
 
     function checkIfGamesUpdated() {
-        $http.get(myBaseURL2+'/isGamesUpdated').then(
+        $http.get(myBaseURL2+'/game/isGamesUpdated').then(
             function (value) { 
                 $scope.updated=value;
             }
@@ -57,7 +57,15 @@ app.controller('mainCtrl', ['$scope', '$http', 'credentials', '$rootScope', func
         //         $scope.updating=false;
         //     }
         // );
-        $http.get('https://buzzerbeater.com/match/55576/boxscore.aspx').then(
+        $http.get('https://www.buzzerbeater.com/match/55576/boxscore.aspx').then(
+            function (res) {
+                console.log(res);
+            },
+            function (res) {
+                console.log(res);
+            }
+        );
+        $http.get('https://www.buzzerbeater.com/country/33/overview.aspx').then(
             function (res) {
                 console.log(res);
             },
